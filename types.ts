@@ -1,10 +1,17 @@
 export enum Category {
   SEO = 'SEO',
-  PPC = 'PPC',
-  AI = 'AI & Automation',
-  CONTENT = 'Content Marketing',
-  ANALYTICS = 'Data & Analytics',
+  IA = 'IA',
 }
+
+export type ContentBlock =
+  | { type: 'paragraph'; text: string }
+  | { type: 'heading'; text: string; level: 2 | 3 }
+  | { type: 'quote'; text: string; author?: string }
+  | { type: 'list'; items: string[] }
+  | { type: 'table'; headers: string[]; rows: string[][] }
+  | { type: 'image'; url: string; caption?: string }
+  | { type: 'code'; code: string; language?: string }
+  | { type: 'checklist'; items: string[] };
 
 export interface Article {
   id: string;
@@ -16,6 +23,7 @@ export interface Article {
   readTime: string;
   imageUrl: string;
   isFeatured?: boolean;
+  content: ContentBlock[];
 }
 
 export interface WriterForm {

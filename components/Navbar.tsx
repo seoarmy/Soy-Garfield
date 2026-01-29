@@ -1,125 +1,283 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Search, Zap } from 'lucide-react';
+import {
+  Menu, X, Search, Zap, Home, User,
+  MessageSquare, ChevronRight, Sparkles,
+  BookOpen, Linkedin, Twitter, ArrowRight
+} from 'lucide-react';
 import { NavItem } from '../types';
+import pietroLogo from '../assets/pietro.png';
 
 const navItems: NavItem[] = [
-  { label: 'Latest News', path: '/' },
   { label: 'SEO', path: '/category/seo' },
-  { label: 'AI & Agents', path: '/category/ai' },
-  { label: 'Content Strategy', path: '/category/content' },
-  { label: 'About', path: '/about' },
+  { label: 'IA', path: '/category/ia' },
 ];
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
 
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Prevent scroll when mobile menu is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      document.body.style.overflow = 'unset';
+      document.body.style.position = 'static';
+      document.body.style.width = 'auto';
+    }
+  }, [isOpen]);
+
+  // Close menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
+
   return (
-    <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
-          {/* Logo Area */}
-          <div className="flex-shrink-0 flex items-center gap-8">
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-garfield-500 text-white transition-transform group-hover:scale-105">
-                <Zap size={24} fill="currentColor" />
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${scrolled
+            ? 'bg-white/90 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] py-3 border-b border-slate-100'
+            : 'bg-white py-5 border-b border-white'
+          }`}
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between">
+            {/* Logo Section */}
+            <Link to="/" className="flex items-center gap-3 group relative z-[110]">
+              <div className="relative flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-2xl overflow-hidden bg-slate-100 transition-all duration-500 group-hover:rotate-[5deg] group-hover:scale-110 shadow-lg border-2 border-white ring-1 ring-slate-100">
+                <img
+                  src={pietroLogo}
+                  alt="Pietro Fiorillo"
+                  className="h-full w-full object-cover"
+                />
               </div>
               <div className="flex flex-col">
-                <span className="text-2xl font-bold tracking-tight text-slate-900 leading-none">
+                <span className="text-lg sm:text-xl font-black tracking-tight text-slate-900 leading-none">
                   Soy<span className="text-garfield-600">Garfield</span>
                 </span>
-                <span className="text-[0.65rem] font-semibold uppercase tracking-widest text-slate-500">
-                  Journal of Digital Marketing
+                <span className="hidden sm:block text-[0.6rem] font-black uppercase tracking-[0.3em] text-slate-400 mt-1">
+                  Pietro Fiorillo
                 </span>
               </div>
             </Link>
 
-            {/* Desktop Nav */}
-            <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
-              {navItems.map((item) => (
+            {/* Desktop Actions bar toggle the menu */}
+            <div className="flex items-center gap-3 sm:gap-6">
+              {/* Desktop Nav */}
+              <nav className="hidden lg:flex items-center gap-2">
+                {navItems.map((item) => (
+                  <Link
+                    key={item.label}
+                    to={item.path}
+                    className={`px-5 py-2.5 text-[0.7rem] font-black transition-all uppercase tracking-[0.2em] rounded-xl relative overflow-hidden group/link ${location.pathname === item.path
+                        ? 'text-garfield-600 bg-garfield-50'
+                        : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                      }`}
+                  >
+                    <span className="relative z-10">{item.label}</span>
+                  </Link>
+                ))}
                 <Link
-                  key={item.label}
-                  to={item.path}
-                  className={`text-sm font-bold transition-colors uppercase tracking-wide ${
-                    location.pathname === item.path 
-                      ? 'text-garfield-600' 
-                      : 'text-slate-600 hover:text-garfield-600'
-                  }`}
+                  to="/blog"
+                  className={`px-5 py-2.5 text-[0.7rem] font-black transition-all uppercase tracking-[0.2em] rounded-xl group/link ${location.pathname === '/blog'
+                      ? 'text-garfield-600 bg-garfield-50'
+                      : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                    }`}
                 >
-                  {item.label}
+                  <span className="relative z-10 flex items-center gap-2">
+                    <BookOpen size={14} className="opacity-50" />
+                    Artículos
+                  </span>
                 </Link>
-              ))}
-            </nav>
-          </div>
+              </nav>
 
-          {/* Right Actions */}
-          <div className="hidden md:flex items-center gap-4">
-            <button className="p-2 text-slate-400 hover:text-garfield-600 transition-colors">
-              <Search size={20} />
-            </button>
-            <div className="h-6 w-px bg-gray-200"></div>
-            <Link 
-              to="/write"
-              className="text-sm font-bold text-slate-900 hover:text-garfield-600 transition-colors"
-            >
-              Write For Us
-            </Link>
-            <Link 
-              to="/contact"
-              className="rounded-full bg-slate-900 px-5 py-2.5 text-sm font-bold text-white hover:bg-garfield-600 transition-colors shadow-lg shadow-slate-900/10"
-            >
-              Contact
-            </Link>
-          </div>
+              <div className="hidden md:flex items-center group/search relative">
+                <input
+                  type="text"
+                  placeholder="Buscar..."
+                  className={`bg-slate-50 border border-slate-100 rounded-2xl px-5 py-2.5 text-xs font-medium focus:ring-2 focus:ring-garfield-500 focus:bg-white outline-none transition-all duration-500 ${isSearchOpen ? 'w-64 opacity-100' : 'w-0 opacity-0 pointer-events-none'
+                    }`}
+                />
+                <button
+                  onClick={() => setIsSearchOpen(!isSearchOpen)}
+                  className={`p-2.5 text-slate-400 hover:text-garfield-600 hover:bg-garfield-50 rounded-xl transition-all ${isSearchOpen ? 'bg-garfield-50 text-garfield-600 ml-2' : ''
+                    }`}
+                >
+                  <Search size={20} />
+                </button>
+              </div>
 
-          {/* Mobile Menu Button */}
-          <div className="-mr-2 flex md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              type="button"
-              className="inline-flex items-center justify-center rounded-md p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-500 focus:outline-none"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+              <Link
+                to="/contact"
+                className="hidden sm:flex items-center gap-2 rounded-2xl bg-slate-900 px-8 py-3.5 text-[0.65rem] font-black uppercase tracking-[0.2em] text-white hover:bg-garfield-600 transition-all shadow-xl shadow-slate-900/10 active:scale-95 group/btn"
+              >
+                Let's Talk
+                <Sparkles size={14} className="group-hover/btn:animate-sparkle" />
+              </Link>
+
+              {/* Mobile Toggle Button */}
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="lg:hidden relative z-[150] p-3 rounded-2xl bg-slate-900 text-white shadow-lg active:scale-90 transition-all"
+                aria-label="Toggle Menu"
+              >
+                {isOpen ? <X size={20} /> : <Menu size={20} />}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </header>
 
-      {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 shadow-xl">
-          <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-            {navItems.map((item) => (
-              <Link
-                key={item.label}
-                to={item.path}
-                onClick={() => setIsOpen(false)}
-                className="block rounded-md px-3 py-2 text-base font-medium text-slate-700 hover:bg-garfield-50 hover:text-garfield-600"
-              >
-                {item.label}
+      {/* FULL SCREEN MOBILE OVERLAY */}
+      <div
+        className={`fixed inset-0 z-[140] bg-white lg:hidden transition-all duration-500 flex flex-col ${isOpen
+            ? 'opacity-100 pointer-events-auto visible'
+            : 'opacity-0 pointer-events-none invisible'
+          }`}
+      >
+        {/* Safe Area / Top Spacer */}
+        <div className="h-24 sm:h-28 flex-shrink-0"></div>
+
+        <div className="flex-grow overflow-y-auto px-6 pb-24">
+          <div className="mx-auto max-w-lg">
+            {/* Author Card */}
+            <div className="bg-slate-50 rounded-[2.5rem] p-6 mb-8 border border-slate-100 relative overflow-hidden shadow-sm">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-garfield-500/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+              <div className="flex items-center gap-5 relative z-10">
+                <div className="h-16 w-16 overflow-hidden rounded-3xl border-4 border-white shadow-xl flex-shrink-0">
+                  <img src={pietroLogo} alt="Pietro" className="h-full w-full object-cover" />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-xl font-black text-slate-900 leading-tight">
+                    Pietro <span className="text-garfield-600">Garfield</span>
+                  </div>
+                  <div className="text-[0.6rem] font-black uppercase tracking-widest text-slate-400 mt-1 truncate">
+                    SEO & IA Architect
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Search Input */}
+            <div className="relative mb-8">
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+              <input
+                type="text"
+                placeholder="¿Qué quieres aprender hoy?"
+                className="w-full bg-slate-50 border border-slate-100 rounded-3xl py-5 pl-14 pr-6 text-sm font-bold placeholder-slate-400 focus:bg-white focus:ring-2 focus:ring-garfield-500 transition-all outline-none shadow-sm"
+              />
+            </div>
+
+            {/* Navigation Sections */}
+            <div className="grid grid-cols-1 gap-3 mb-10">
+              <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+                <div className="flex items-center gap-4">
+                  <div className="p-2.5 bg-white rounded-2xl shadow-sm text-slate-900 group-hover:text-garfield-600 transition-colors">
+                    <Home size={20} />
+                  </div>
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-900">Inicio</span>
+                </div>
+                <ChevronRight size={16} className="text-slate-300 group-hover:text-garfield-600 transition-all group-hover:translate-x-1" />
               </Link>
-            ))}
-            <Link
-                to="/write"
-                onClick={() => setIsOpen(false)}
-                className="block rounded-md px-3 py-2 text-base font-medium text-slate-700 hover:bg-garfield-50 hover:text-garfield-600"
-              >
-                Write For Us
-            </Link>
-            <div className="mt-4 px-3 border-t border-gray-100 pt-4">
-               <Link 
+
+              {navItems.map((item) => (
+                <Link key={item.label} to={item.path} onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+                  <div className="flex items-center gap-4">
+                    <div className="p-2.5 bg-white rounded-2xl shadow-sm text-slate-900 group-hover:text-garfield-600 transition-colors">
+                      {item.label === 'SEO' ? <Sparkles size={20} /> : <Zap size={20} />}
+                    </div>
+                    <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-900">{item.label}</span>
+                  </div>
+                  <ChevronRight size={16} className="text-slate-300 group-hover:text-garfield-600 transition-all group-hover:translate-x-1" />
+                </Link>
+              ))}
+
+              <Link to="/blog" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+                <div className="flex items-center gap-4">
+                  <div className="p-2.5 bg-white rounded-2xl shadow-sm text-slate-900 group-hover:text-garfield-600 transition-colors">
+                    <BookOpen size={20} />
+                  </div>
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-900">Blog Completo</span>
+                </div>
+                <ChevronRight size={16} className="text-slate-300 group-hover:text-garfield-600 transition-all group-hover:translate-x-1" />
+              </Link>
+            </div>
+
+            {/* Social and Contact Info */}
+            <div className="mt-auto border-t border-slate-100 pt-8">
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex gap-3">
+                  <a href="#" className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all shadow-sm">
+                    <Linkedin size={20} />
+                  </a>
+                  <a href="#" className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all shadow-sm">
+                    <Twitter size={20} />
+                  </a>
+                </div>
+                <Link to="/contact" onClick={() => setIsOpen(false)} className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-garfield-600 flex items-center gap-2">
+                  Consultoría <ArrowRight size={14} />
+                </Link>
+              </div>
+
+              <Link
                 to="/contact"
                 onClick={() => setIsOpen(false)}
-                className="block w-full text-center rounded-lg bg-garfield-500 px-4 py-3 text-sm font-bold text-white hover:bg-garfield-600"
+                className="flex items-center justify-center gap-3 w-full bg-slate-900 py-5 rounded-3xl text-white font-black uppercase tracking-[0.2em] text-[0.7rem] shadow-2xl shadow-slate-900/10 active:scale-95 transition-all"
               >
-                Contact Us
+                <MessageSquare size={18} />
+                Agendar una llamada
               </Link>
             </div>
           </div>
         </div>
-      )}
-    </header>
+      </div>
+
+      {/* FLOATING MOBILE NAV BAR - Hidden when menu is open */}
+      <nav className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[110] w-[90%] max-w-md h-16 bg-slate-900/90 backdrop-blur-2xl rounded-[2rem] lg:hidden flex items-center justify-around px-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-white/10 transition-all duration-300 ${isOpen ? 'translate-y-32 opacity-0' : 'translate-y-0 opacity-100'}`}>
+        <Link to="/" className={`flex flex-col items-center justify-center gap-1 transition-all ${location.pathname === '/' ? 'text-garfield-400' : 'text-slate-400 active:scale-90 hover:text-white'}`}>
+          <Home size={20} strokeWidth={location.pathname === '/' ? 3 : 2} />
+          <span className="text-[0.55rem] font-black uppercase tracking-widest">Inicio</span>
+        </Link>
+        <Link to="/category/seo" className={`flex flex-col items-center justify-center gap-1 transition-all ${location.pathname === '/category/seo' ? 'text-garfield-400' : 'text-slate-400 active:scale-90 hover:text-white'}`}>
+          <Sparkles size={20} strokeWidth={location.pathname === '/category/seo' ? 3 : 2} />
+          <span className="text-[0.55rem] font-black uppercase tracking-widest">SEO</span>
+        </Link>
+        <Link
+          to="/write"
+          className="relative -top-8 flex h-16 w-16 items-center justify-center rounded-[2rem] bg-garfield-500 text-white shadow-2xl shadow-garfield-500/40 transition-all hover:scale-110 active:scale-90"
+        >
+          <Zap size={28} fill="currentColor" />
+        </Link>
+        <Link to="/category/ia" className={`flex flex-col items-center justify-center gap-1 transition-all ${location.pathname === '/category/ia' ? 'text-garfield-400' : 'text-slate-400 active:scale-90 hover:text-white'}`}>
+          <Zap size={20} strokeWidth={location.pathname === '/category/ia' ? 3 : 2} />
+          <span className="text-[0.55rem] font-black uppercase tracking-widest">IA</span>
+        </Link>
+        <button
+          onClick={() => setIsOpen(true)}
+          className={`flex flex-col items-center justify-center gap-1 transition-all ${isOpen ? 'text-garfield-400' : 'text-slate-400 active:scale-90 hover:text-white'}`}
+        >
+          <Menu size={20} strokeWidth={isOpen ? 3 : 2} />
+          <span className="text-[0.55rem] font-black uppercase tracking-widest">Más</span>
+        </button>
+      </nav>
+
+      {/* Spacer */}
+      <div className="h-[80px] sm:h-[100px]"></div>
+    </>
   );
 };
 

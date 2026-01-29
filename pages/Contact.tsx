@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, MapPin, Send, MessageSquare, CheckCircle, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,8 @@ const Contact: React.FC = () => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -33,15 +36,15 @@ const Contact: React.FC = () => {
           <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100 text-green-600 mb-8">
             <CheckCircle size={40} />
           </div>
-          <h2 className="text-3xl font-bold text-slate-900 mb-4">Message Sent!</h2>
+          <h2 className="text-3xl font-bold text-slate-900 mb-4">¡Mensaje enviado!</h2>
           <p className="text-slate-600 mb-8 leading-relaxed">
-            Thank you for reaching out. We've received your message and will get back to you within 24 hours.
+            Gracias por contactarnos. Hemos recibido tu mensaje y te responderemos en menos de 24 horas.
           </p>
-          <button 
-            onClick={() => window.location.href = '/'}
+          <button
+            onClick={() => navigate('/')}
             className="w-full rounded-xl bg-slate-900 px-6 py-4 text-sm font-bold text-white hover:bg-slate-800 transition-colors"
           >
-            Return Home
+            Volver al Inicio
           </button>
         </div>
       </div>
@@ -54,27 +57,27 @@ const Contact: React.FC = () => {
       <div className="bg-slate-50 border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24 text-center">
           <span className="inline-block rounded-full bg-garfield-100 px-3 py-1 text-xs font-bold text-garfield-600 uppercase tracking-wider mb-6">
-            Get in Touch
+            Ponte en contacto
           </span>
           <h1 className="text-4xl sm:text-6xl font-extrabold text-slate-900 tracking-tight mb-6">
-            Let's Start a Conversation
+            Comencemos una conversación
           </h1>
           <p className="text-xl text-slate-500 max-w-2xl mx-auto leading-relaxed">
-            Have a question about SEO, a partnership proposal, or just want to say hello? 
-            We'd love to hear from you.
+            ¿Tienes alguna pregunta sobre SEO, una propuesta de colaboración o simplemente quieres saludar?
+            Nos encantaría saber de ti.
           </p>
         </div>
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-          
+
           {/* Contact Info & Context */}
           <div>
-            <h2 className="text-2xl font-bold text-slate-900 mb-6">Contact Information</h2>
+            <h2 className="text-2xl font-bold text-slate-900 mb-6">Información de contacto</h2>
             <p className="text-slate-600 mb-10 leading-relaxed">
-              Whether you're looking for consulting on your next AI project or need clarity on the latest Google update, 
-              our inbox is always open to fellow digital marketers.
+              Ya sea que busques consultoría para tu próximo proyecto digital o necesites claridad sobre la última actualización de Google,
+              nuestra bandeja de entrada siempre está abierta para otros especialistas en marketing.
             </p>
 
             <div className="space-y-8">
@@ -83,8 +86,8 @@ const Contact: React.FC = () => {
                   <Mail size={24} />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 mb-1">Email Us</h3>
-                  <p className="text-slate-500 text-sm mb-2">For general inquiries and editorial pitches.</p>
+                  <h3 className="font-bold text-slate-900 mb-1">Escríbenos</h3>
+                  <p className="text-slate-500 text-sm mb-2">Para consultas generales y propuestas editoriales.</p>
                   <a href="mailto:hello@soygarfield.com" className="text-garfield-600 font-semibold hover:text-garfield-700">
                     hello@soygarfield.com
                   </a>
@@ -96,8 +99,8 @@ const Contact: React.FC = () => {
                   <MessageSquare size={24} />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 mb-1">Social Media</h3>
-                  <p className="text-slate-500 text-sm mb-2">Follow us for real-time updates.</p>
+                  <h3 className="font-bold text-slate-900 mb-1">Redes Sociales</h3>
+                  <p className="text-slate-500 text-sm mb-2">Síguenos para actualizaciones en tiempo real.</p>
                   <div className="flex gap-4">
                     <a href="#" className="text-slate-400 hover:text-slate-900 transition-colors font-medium text-sm">Twitter</a>
                     <a href="#" className="text-slate-400 hover:text-slate-900 transition-colors font-medium text-sm">LinkedIn</a>
@@ -110,10 +113,10 @@ const Contact: React.FC = () => {
                   <MapPin size={24} />
                 </div>
                 <div>
-                  <h3 className="font-bold text-slate-900 mb-1">Location</h3>
+                  <h3 className="font-bold text-slate-900 mb-1">Ubicación</h3>
                   <p className="text-slate-500 text-sm">
-                    Digital Nomad based globally.<br />
-                    Currently in: <span className="font-medium text-slate-900">Tokyo, Japan</span>
+                    Nómada digital con base global.<br />
+                    Actualmente en: <span className="font-medium text-slate-900">Tokio, Japón</span>
                   </p>
                 </div>
               </div>
@@ -121,18 +124,18 @@ const Contact: React.FC = () => {
 
             <div className="mt-12 p-8 bg-slate-900 rounded-2xl text-white relative overflow-hidden">
               <div className="relative z-10">
-                <h3 className="font-bold text-xl mb-2">Need an SEO Audit?</h3>
+                <h3 className="font-bold text-xl mb-2">¿Necesitas una Auditoría SEO?</h3>
                 <p className="text-slate-300 text-sm mb-6 max-w-xs">
-                  Get a comprehensive breakdown of your site's performance powered by our AI agents.
+                  Obtén un análisis exhaustivo del rendimiento de tu sitio por nuestro equipo.
                 </p>
                 <a href="/write" className="inline-flex items-center text-sm font-bold text-white hover:text-garfield-400 transition-colors">
-                  Request Audit <ArrowRight size={16} className="ml-2" />
+                  Solicitar Auditoría <ArrowRight size={16} className="ml-2" />
                 </a>
               </div>
               <div className="absolute right-0 bottom-0 opacity-10 transform translate-x-1/4 translate-y-1/4">
-                 <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                   <circle cx="100" cy="100" r="100" fill="white"/>
-                 </svg>
+                <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="100" cy="100" r="100" fill="white" />
+                </svg>
               </div>
             </div>
           </div>
@@ -142,7 +145,7 @@ const Contact: React.FC = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-2">Name</label>
+                  <label htmlFor="name" className="block text-sm font-medium text-slate-700 mb-2">Nombre</label>
                   <input
                     type="text"
                     name="name"
@@ -151,7 +154,7 @@ const Contact: React.FC = () => {
                     value={formData.name}
                     onChange={handleChange}
                     className="block w-full rounded-xl border-gray-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-garfield-500 focus:bg-white focus:ring-garfield-500 transition-all outline-none"
-                    placeholder="Garfield"
+                    placeholder="Tu nombre"
                   />
                 </div>
                 <div>
@@ -164,13 +167,13 @@ const Contact: React.FC = () => {
                     value={formData.email}
                     onChange={handleChange}
                     className="block w-full rounded-xl border-gray-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-garfield-500 focus:bg-white focus:ring-garfield-500 transition-all outline-none"
-                    placeholder="you@company.com"
+                    placeholder="tu@empresa.com"
                   />
                 </div>
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-slate-700 mb-2">Subject</label>
+                <label htmlFor="subject" className="block text-sm font-medium text-slate-700 mb-2">Asunto</label>
                 <select
                   name="subject"
                   id="subject"
@@ -178,16 +181,16 @@ const Contact: React.FC = () => {
                   onChange={handleChange}
                   className="block w-full rounded-xl border-gray-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-garfield-500 focus:bg-white focus:ring-garfield-500 transition-all outline-none appearance-none"
                 >
-                  <option value="" disabled>Select a topic...</option>
-                  <option value="Editorial">Editorial Inquiry</option>
-                  <option value="Partnership">Partnership / Advertising</option>
-                  <option value="Consulting">SEO Consulting</option>
-                  <option value="Other">Other</option>
+                  <option value="" disabled>Selecciona un tema...</option>
+                  <option value="Editorial">Consulta Editorial</option>
+                  <option value="Partnership">Colaboración / Publicidad</option>
+                  <option value="Consulting">Consultoría SEO</option>
+                  <option value="Other">Otro</option>
                 </select>
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-2">Message</label>
+                <label htmlFor="message" className="block text-sm font-medium text-slate-700 mb-2">Mensaje</label>
                 <textarea
                   name="message"
                   id="message"
@@ -196,7 +199,7 @@ const Contact: React.FC = () => {
                   value={formData.message}
                   onChange={handleChange}
                   className="block w-full rounded-xl border-gray-200 bg-slate-50 px-4 py-3 text-slate-900 focus:border-garfield-500 focus:bg-white focus:ring-garfield-500 transition-all outline-none resize-none"
-                  placeholder="How can we help you today?"
+                  placeholder="¿En qué podemos ayudarte?"
                 />
               </div>
 
@@ -205,7 +208,7 @@ const Contact: React.FC = () => {
                 disabled={isSubmitting}
                 className="w-full flex items-center justify-center gap-2 rounded-xl bg-garfield-500 px-8 py-4 text-base font-bold text-white transition-all hover:bg-garfield-600 hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                {isSubmitting ? 'Sending...' : 'Send Message'}
+                {isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}
                 {!isSubmitting && <Send size={18} />}
               </button>
             </form>

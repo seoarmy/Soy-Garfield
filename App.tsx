@@ -1,5 +1,6 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { HelmetProvider } from 'react-helmet-async';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './pages/Home';
@@ -24,27 +25,29 @@ const ScrollToTop = () => {
 
 const App: React.FC = () => {
   return (
-    <Router>
-      <ScrollToTop />
-      <div className="flex min-h-screen flex-col bg-white font-sans text-slate-900">
-        <Navbar />
-        <div className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/category/:slug" element={<CategoryPage />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/write" element={<Write />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/article/:id" element={<ArticleDetail />} />
-            <Route path="/privacy" element={<PrivacyPolicy />} />
-            <Route path="/terms" element={<TermsOfService />} />
-            <Route path="/sitemap" element={<Sitemap />} />
-          </Routes>
+    <HelmetProvider>
+      <Router>
+        <ScrollToTop />
+        <div className="flex min-h-screen flex-col bg-white font-sans text-slate-900">
+          <Navbar />
+          <div className="flex-grow">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/category/:slug" element={<CategoryPage />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/write" element={<Write />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/article/:id" element={<ArticleDetail />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/sitemap" element={<Sitemap />} />
+            </Routes>
+          </div>
+          <Footer />
         </div>
-        <Footer />
-      </div>
-    </Router>
+      </Router>
+    </HelmetProvider>
   );
 };
 

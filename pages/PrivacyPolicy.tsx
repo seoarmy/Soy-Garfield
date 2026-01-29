@@ -5,58 +5,58 @@ const PrivacyPolicy: React.FC = () => {
     <div className="min-h-screen bg-white py-16 lg:py-24">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl mb-4">Privacy Policy</h1>
-          <p className="text-slate-500">Last updated: {new Date().toLocaleDateString()}</p>
+          <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl mb-4">Política de Privacidad</h1>
+          <p className="text-slate-500">Última actualización: {new Date().toLocaleDateString('es-ES')}</p>
         </div>
 
         <div className="prose prose-slate max-w-none prose-headings:font-bold prose-headings:text-slate-900 prose-a:text-garfield-600 prose-a:no-underline hover:prose-a:underline">
           <p className="lead">
-            At SoyGarfield ("we," "us," or "our"), we respect your privacy and are committed to protecting your personal data. 
-            This privacy policy will inform you as to how we look after your personal data when you visit our website and tell you about your privacy rights.
+            En SoyGarfield ("nosotros", "nuestro" o "la web"), respetamos su privacidad y nos comprometemos a proteger sus datos personales.
+            Esta política de privacidad le informará sobre cómo cuidamos sus datos personales cuando visita nuestro sitio web y le informará sobre sus derechos de privacidad.
           </p>
 
-          <h2>1. Information We Collect</h2>
+          <h2>1. Información que recopilamos</h2>
           <p>
-            We may collect, use, store and transfer different kinds of personal data about you which we have grouped together as follows:
+            Podemos recopilar, utilizar, almacenar y transferir diferentes tipos de datos personales sobre usted que hemos agrupado de la siguiente manera:
           </p>
           <ul>
-            <li><strong>Identity Data:</strong> includes first name, last name, username or similar identifier.</li>
-            <li><strong>Contact Data:</strong> includes email address and telephone number (if provided via forms).</li>
-            <li><strong>Technical Data:</strong> includes internet protocol (IP) address, your login data, browser type and version, time zone setting and location, browser plug-in types and versions, operating system and platform and other technology on the devices you use to access this website.</li>
-            <li><strong>Usage Data:</strong> includes information about how you use our website, products and services.</li>
+            <li><strong>Datos de Identidad:</strong> incluye nombre, apellido, nombre de usuario o identificador similar.</li>
+            <li><strong>Datos de Contacto:</strong> incluye dirección de correo electrónico y número de teléfono (si se proporcionan a través de formularios).</li>
+            <li><strong>Datos Técnicos:</strong> incluye la dirección del protocolo de Internet (IP), sus datos de inicio de sesión, tipo y versión del navegador, configuración de zona horaria y ubicación, tipos y versiones de complementos del navegador, sistema operativo y plataforma, y otra tecnología en los dispositivos que utiliza para acceder a este sitio web.</li>
+            <li><strong>Datos de Uso:</strong> incluye información sobre cómo utiliza nuestro sitio web, productos y servicios.</li>
           </ul>
 
-          <h2>2. How We Use Your Information</h2>
+          <h2>2. Cómo utilizamos su información</h2>
           <p>
-            We will only use your personal data when the law allows us to. Most commonly, we will use your personal data in the following circumstances:
+            Solo utilizaremos sus datos personales cuando la ley nos lo permita. Lo más común es que utilicemos sus datos personales en las siguientes circunstancias:
           </p>
           <ul>
-            <li>To provide you with the content you have requested (e.g., newsletters).</li>
-            <li>To improve our website, products/services, marketing, and customer relationships.</li>
-            <li>To comply with a legal or regulatory obligation.</li>
+            <li>Para proporcionarle el contenido que ha solicitado (por ejemplo, boletines informativos).</li>
+            <li>Para mejorar nuestro sitio web, productos/servicios, marketing y relaciones con los clientes.</li>
+            <li>Para cumplir con una obligación legal o reglamentaria.</li>
           </ul>
 
-          <h2>3. Cookies and Tracking Technologies</h2>
+          <h2>3. Cookies y tecnologías de seguimiento</h2>
           <p>
-            Our website uses cookies to distinguish you from other users of our website. This helps us to provide you with a good experience when you browse our website and also allows us to improve our site.
+            Nuestro sitio web utiliza cookies para distinguirlo de otros usuarios de nuestro sitio web. Esto nos ayuda a brindarle una buena experiencia cuando navega por nuestro sitio web y también nos permite mejorarlo.
           </p>
           <p>
-            We may use third-party analytics tools, such as Google Analytics, to help us measure traffic and usage trends. These tools collect information sent by your device or our Service, including the web pages you visit, add-ons, and other information that assists us in improving the Service.
-          </p>
-
-          <h2>4. Third-Party Links</h2>
-          <p>
-            This website may include links to third-party websites, plug-ins, and applications. Clicking on those links or enabling those connections may allow third parties to collect or share data about you. We do not control these third-party websites and are not responsible for their privacy statements.
+            Podemos utilizar herramientas de análisis de terceros, como Google Analytics, para ayudarnos a medir el tráfico y las tendencias de uso. Estas herramientas recopilan información enviada por su dispositivo o nuestro Servicio, incluidas las páginas web que visita, complementos y otra información que nos ayuda a mejorar el Servicio.
           </p>
 
-          <h2>5. Data Security</h2>
+          <h2>4. Enlaces de terceros</h2>
           <p>
-            We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used or accessed in an unauthorized way, altered or disclosed.
+            Este sitio web puede incluir enlaces a sitios web, complementos y aplicaciones de terceros. Hacer clic en esos enlaces o habilitar esas conexiones puede permitir que terceros recopilen o compartan datos sobre usted. No controlamos estos sitios web de terceros y no somos responsables de sus declaraciones de privacidad.
           </p>
 
-          <h2>6. Contact Us</h2>
+          <h2>5. Seguridad de los datos</h2>
           <p>
-            If you have any questions about this privacy policy or our privacy practices, please contact us at <a href="mailto:hello@soygarfield.com">hello@soygarfield.com</a>.
+            Hemos implementado medidas de seguridad adecuadas para evitar que sus datos personales se pierdan accidentalmente, se utilicen o se acceda a ellos de forma no autorizada, se alteren o se divulguen.
+          </p>
+
+          <h2>6. Contáctenos</h2>
+          <p>
+            Si tiene alguna pregunta sobre esta política de privacidad o nuestras prácticas de privacidad, contáctenos en <a href="mailto:hello@soygarfield.com">hello@soygarfield.com</a>.
           </p>
         </div>
       </div>
