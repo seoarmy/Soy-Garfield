@@ -156,10 +156,25 @@ export const getArticleById = (id: string | undefined): Article | undefined => {
 };
 
 export const getLatestArticles = (count: number = 3): Article[] => {
+    const monthMap: { [key: string]: string } = {
+        'Ene': 'Jan', 'Feb': 'Feb', 'Mar': 'Mar', 'Abr': 'Apr', 'May': 'May', 'Jun': 'Jun',
+        'Jul': 'Jul', 'Ago': 'Aug', 'Sep': 'Sep', 'Oct': 'Oct', 'Nov': 'Nov', 'Dic': 'Dec'
+    };
+
+    const parseDate = (dateStr: string) => {
+        // Handle "28 Ene, 2024" format
+        const match = dateStr.match(/(\d+)\s+(\w+),\s+(\d+)/);
+        if (match) {
+            const [_, day, month, year] = match;
+            const englishMonth = monthMap[month] || month;
+            return new Date(`${englishMonth} ${day} ${year}`).getTime();
+        }
+        // Fallback for other formats
+        return new Date(dateStr).getTime();
+    };
+
     const sorted = [...ARTICLES].sort((a, b) => {
-        const dateA = new Date(a.date.replace(/(\d+) (\w+), (\d+)/, '$2 $1 $3'));
-        const dateB = new Date(b.date.replace(/(\d+) (\w+), (\d+)/, '$2 $1 $3'));
-        return dateB.getTime() - dateA.getTime();
+        return parseDate(b.date) - parseDate(a.date);
     });
     return sorted.slice(0, count);
 };

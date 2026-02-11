@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Category } from '../types';
+import { Category, Article } from '../types';
 import ArticleCard from '../components/ArticleCard';
-import { ARTICLES } from '../data/articles';
-import { TrendingUp, Mail, ChevronRight, Zap } from 'lucide-react';
+import { getArticles } from '../services/articleService';
+import { TrendingUp, Mail, ChevronRight, Zap, Loader2 } from 'lucide-react';
 import SEO from '../components/SEO';
 
 const CategoryPage: React.FC = () => {
   const { slug } = useParams();
-  const [activeTab, setActiveTab] = useState<'latest' | 'popular'>('latest');
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const getCategoryName = (slug: string | undefined) => {
     if (!slug) return 'Últimas Noticias';
@@ -20,17 +21,61 @@ const CategoryPage: React.FC = () => {
   };
 
   const categoryName = getCategoryName(slug);
-  const filteredArticles = ARTICLES.filter(art =>
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const data = await getArticles();
+        setArticles(data);
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchArticles();
+  }, []);
+
+  const filteredArticles = articles.filter(art =>
     categoryName === 'Últimas Noticias' ? true : art.category === categoryName
   );
 
-  const sidebarArticles = ARTICLES.filter(a => a.category !== categoryName).slice(0, 3);
+  const sidebarArticles = articles.filter(a => a.category !== categoryName).slice(0, 3);
+
+  const baseUrl = 'https://soygarfield.com';
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": baseUrl
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": categoryName,
+        "item": `${baseUrl}/category/${slug?.toLowerCase() || ''}`
+      }
+    ]
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <Loader2 className="animate-spin text-garfield-500" size={48} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white pb-32">
       <SEO
         title={`Estrategia y Artículos de ${categoryName}`}
         description={`Explora nuestra biblioteca técnica sobre ${categoryName}. Guías avanzadas, experimentos y análisis para potenciar tu estrategia digital.`}
+        schemaData={breadcrumbSchema}
       />
 
       {/* Modern Header */}
@@ -109,7 +154,7 @@ const CategoryPage: React.FC = () => {
               <p className="text-sm text-slate-400 mb-10 font-medium">Únete a los mejores profesionales del sector.</p>
               <form className="space-y-4">
                 <input type="email" placeholder="Tu email profesional" className="w-full bg-white/5 border-white/10 rounded-2xl px-6 py-5 text-sm text-white focus:bg-white/10 transition-all outline-none border mb-2" />
-                <button className="w-full bg-garfield-500 text-white py-5 rounded-2xl text-[0.65rem] font-black uppercase tracking-widest shadow-xl shadow-garfield-500/20 active:scale-95 transition-all">Suscribirme ahora</button>
+                <button className="w-full bg-garfield-500 text-white py-5 rounded-2xl text-[0.65rem] font-black uppercase tracking-widest shadow-xl shadow-garfield-500/20 active:scale-95 transition-all">Suscribirse ahora</button>
               </form>
             </div>
 

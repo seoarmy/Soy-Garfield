@@ -13,6 +13,7 @@ import {
   Globe
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 import ArticleCard from '../components/ArticleCard';
 import { Category, Article } from '../types';
 
@@ -27,6 +28,7 @@ const pietroArticles: Article[] = [
     category: Category.SEO,
     readTime: '12 min read',
     imageUrl: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&auto=format&fit=crop&q=60',
+    content: [],
   },
   {
     id: 'pietro-2',
@@ -37,6 +39,7 @@ const pietroArticles: Article[] = [
     category: Category.SOCIAL,
     readTime: '8 min read',
     imageUrl: 'https://images.unsplash.com/photo-1611162147679-51f3ef92d42a?q=80&w=2072&auto=format&fit=crop',
+    content: [],
   },
   {
     id: 'pietro-3',
@@ -47,6 +50,7 @@ const pietroArticles: Article[] = [
     category: Category.ANALYTICS,
     readTime: '15 min read',
     imageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&auto=format&fit=crop&q=60',
+    content: [],
   }
 ];
 
@@ -68,6 +72,26 @@ const externalPublications = [
 const About: React.FC = () => {
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900">
+      <SEO
+        title="Sobre Pietro Fiorillo"
+        description="Director de Marketing y Consultor de SEO Técnico. Conoce la trayectoria de Pietro Fiorillo y su enfoque estratégico."
+        schemaData={{
+          "@context": "https://schema.org",
+          "@type": "ProfilePage",
+          "mainEntity": {
+            "@type": "Person",
+            "name": "Pietro Fiorillo",
+            "jobTitle": "Director de Marketing & Consultor de SEO Técnico",
+            "description": "Estratega digital enfocado en el crecimiento a través de datos y tecnología.",
+            "url": "https://soygarfield.com/about",
+            "image": "https://soygarfield.com/assets/pietro.png",
+            "sameAs": [
+              "https://linkedin.com/in/pietrofiorillo",
+              "https://twitter.com/pietrofiorillo"
+            ]
+          }
+        }}
+      />
 
       {/* --- HERO SECTION --- */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
@@ -88,13 +112,13 @@ const About: React.FC = () => {
               </div>
               {/* Social Icons Float */}
               <div className="mt-6 flex justify-center gap-4">
-                <a href="#" className="h-10 w-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all text-white border border-white/10">
+                <a href="https://linkedin.com/in/pietrofiorillo" target="_blank" rel="noopener noreferrer" className="h-10 w-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all text-white border border-white/10">
                   <Linkedin size={20} />
                 </a>
-                <a href="#" className="h-10 w-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all text-white border border-white/10">
+                <a href="mailto:hello@soygarfield.com" className="h-10 w-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all text-white border border-white/10">
                   <Mail size={20} />
                 </a>
-                <a href="#" className="h-10 w-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all text-white border border-white/10">
+                <a href="https://twitter.com/pietrofiorillo" target="_blank" rel="noopener noreferrer" className="h-10 w-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-all text-white border border-white/10">
                   <Twitter size={20} />
                 </a>
               </div>
@@ -159,7 +183,7 @@ const About: React.FC = () => {
               </div>
               <p className="text-lg text-slate-500">Perspectivas y análisis sobre el mundo digital.</p>
             </div>
-            <Link to="/blog" className="hidden sm:flex items-center gap-2 text-sm font-bold text-garfield-600 hover:text-garfield-700 uppercase tracking-widest transition-colors">
+            <Link to="/category/seo" className="hidden sm:flex items-center gap-2 text-sm font-bold text-garfield-600 hover:text-garfield-700 uppercase tracking-widest transition-colors">
               Ver todo el blog <ArrowRight size={16} />
             </Link>
           </div>
@@ -207,7 +231,9 @@ const About: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* LinkedIn Card */}
           <a
-            href="#"
+            href="https://linkedin.com/in/pietrofiorillo"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group relative overflow-hidden rounded-[2rem] bg-[#0077B5] p-10 text-white transition-transform hover:-translate-y-1 shadow-xl"
           >
             <div className="relative z-10">
@@ -223,7 +249,9 @@ const About: React.FC = () => {
 
           {/* Instagram Card */}
           <a
-            href="#"
+            href="https://instagram.com/pietrofiorillo"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group relative overflow-hidden rounded-[2rem] bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] p-10 text-white transition-transform hover:-translate-y-1 shadow-xl"
           >
             <div className="relative z-10">

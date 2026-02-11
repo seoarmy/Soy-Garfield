@@ -1,0 +1,67 @@
+[
+    {
+        "_type": "breakingNews",
+        "title": "Google anuncia cambios radicales en su algoritmo de búsqueda para 2026",
+        "slug": {
+            "_type": "slug",
+            "current": "google-cambios-algoritmo-2026"
+        },
+        "summary": "El gigante tecnológico confirma que priorizará contenido generado por expertos verificados sobre IA genérica.",
+        "category": "SEO",
+        "publishedAt": "2026-02-11T00:00:00Z",
+        "isActive": true,
+        "priority": 10
+    },
+    {
+        "_type": "breakingNews",
+        "title": "OpenAI lanza GPT-5: Capacidades multimodales revolucionarias",
+        "slug": {
+            "_type": "slug",
+            "current": "openai-gpt5-lanzamiento"
+        },
+        "summary": "La nueva versión promete comprensión contextual 10x superior y razonamiento visual avanzado.",
+        "category": "IA",
+        "publishedAt": "2026-02-10T18:30:00Z",
+        "isActive": true,
+        "priority": 9
+    },
+    {
+        "_type": "breakingNews",
+        "title": "Meta elimina el 40% de cuentas falsas en Instagram",
+        "slug": {
+            "_type": "slug",
+            "current": "meta-elimina-cuentas-falsas-instagram"
+        },
+        "summary": "Nueva ola de purga afecta a millones de cuentas bot. Marcas deben revisar sus métricas de engagement.",
+        "category": "Social Media",
+        "publishedAt": "2026-02-10T14:15:00Z",
+        "isActive": true,
+        "priority": 7
+    },
+    {
+        "_type": "breakingNews",
+        "title": "GA4 introduce atribución basada en IA predictiva",
+        "slug": {
+            "_type": "slug",
+            "current": "ga4-atribucion-ia-predictiva"
+        },
+        "summary": "Google Analytics 4 ahora predice conversiones futuras con machine learning avanzado.",
+        "category": "Analítica",
+        "publishedAt": "2026-02-09T10:00:00Z",
+        "isActive": true,
+        "priority": 6
+    },
+    {
+        "_type": "breakingNews",
+        "title": "Perplexity AI supera los 100M de usuarios activos mensuales",
+        "slug": {
+            "_type": "slug",
+            "current": "perplexity-100m-usuarios"
+        },
+        "summary": "El motor de búsqueda conversacional se consolida como alternativa seria a Google tradicional.",
+        "category": "IA",
+        "publishedAt": "2026-02-08T16:45:00Z",
+        "isActive": true,
+        "priority": 8
+    }
+]

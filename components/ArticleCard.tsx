@@ -12,7 +12,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, variant = 'default' 
   if (variant === 'compact') {
     return (
       <Link
-        to={`/article/${article.id}`}
+        to={`/article/${article.slug}`}
         className="group flex gap-4 items-center py-5 border-b border-gray-100 last:border-0 active:bg-slate-50 transition-colors px-2 rounded-xl -mx-2"
       >
         <div className="flex-1 min-w-0">
@@ -28,7 +28,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, variant = 'default' 
         </div>
         <div className="w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 overflow-hidden rounded-2xl bg-slate-100 shadow-sm">
           <img
-            src={article.imageUrl}
+            src={article.imageUrl || 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=500'}
             alt={article.title}
             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
@@ -39,12 +39,12 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, variant = 'default' 
 
   return (
     <Link
-      to={`/article/${article.id}`}
+      to={`/article/${article.slug}`}
       className="group flex flex-col bg-white h-full rounded-3xl overflow-hidden border border-transparent hover:border-slate-100 hover:shadow-xl transition-all duration-300 active:scale-[0.98]"
     >
       <div className="relative overflow-hidden aspect-[16/10]">
         <img
-          src={article.imageUrl}
+          src={article.imageUrl || 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1000'}
           alt={article.title}
           className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
         />
@@ -72,8 +72,12 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, variant = 'default' 
 
         <div className="flex items-center justify-between pt-6 border-t border-slate-50 mt-auto">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 rounded-full bg-garfield-100 overflow-hidden ring-2 ring-white">
-              <img src={`https://ui-avatars.com/api/?name=${article.author}&background=f97316&color=fff`} alt={article.author} />
+            <div className="h-8 w-8 rounded-full bg-garfield-500 overflow-hidden ring-2 ring-white flex items-center justify-center font-black text-[0.5rem]">
+              {article.authorImage ? (
+                <img src={article.authorImage} alt={article.author} className="h-full w-full object-cover" />
+              ) : (
+                <span className="text-white">{article.author?.charAt(0)}</span>
+              )}
             </div>
             <span className="text-xs font-bold text-slate-900">{article.author}</span>
           </div>

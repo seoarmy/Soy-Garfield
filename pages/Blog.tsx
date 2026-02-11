@@ -1,30 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ArticleCard from '../components/ArticleCard';
-import { Category } from '../types';
-import { ARTICLES } from '../data/articles';
-import { Filter } from 'lucide-react';
+import { Category, Article } from '../types';
+import { getArticles } from '../services/articleService';
+import { Filter, Loader2 } from 'lucide-react';
 import SEO from '../components/SEO';
 
 const Blog: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('Todos');
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const categories = ['Todos', ...Object.values(Category)];
 
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const data = await getArticles();
+        setArticles(data);
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchArticles();
+  }, []);
+
   const filteredArticles = selectedCategory === 'Todos'
-    ? ARTICLES
-    : ARTICLES.filter(art => art.category === selectedCategory);
+    ? articles
+    : articles.filter(art => art.category === selectedCategory);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+        <Loader2 className="animate-spin text-garfield-500" size={48} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-50/50 py-12 lg:py-24 pb-32">
       <SEO
-        title="Blog e Inteligencia"
-        description="Archivo profundo de artículos sobre estrategias de SEO moderno y avances en Inteligencia Artificial."
+        title="Inteligencia - Noticias de SEO & IA"
+        description="Archivo de autoridad con análisis profundos y noticias de última hora sobre SEO e IA."
+        schemaData={{
+          "@context": "https://schema.org",
+          "@type": "Blog",
+          "name": "Archivo de Inteligencia - Soy Garfield",
+          "description": "Explora guías profundas, análisis de industria y experimentos reales en SEO e IA.",
+          "url": "https://soygarfield.com/blog",
+          "publisher": {
+            "@type": "Person",
+            "name": "Pietro Fiorillo"
+          }
+        }}
       />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16 lg:mb-24">
-          <span className="text-[0.65rem] font-black text-garfield-600 uppercase tracking-[0.4em] mb-4 block">Conocimiento sin límites</span>
-          <h1 className="text-4xl font-black text-slate-900 sm:text-7xl tracking-tighter mb-6">Archivo de Inteligencia</h1>
-          <p className="mt-4 text-xl text-slate-500 font-medium max-w-2xl mx-auto">Explora guías profundas, análisis de industria y experimentos reales en SEO e IA.</p>
+          <span className="text-[0.65rem] font-black text-garfield-600 uppercase tracking-[0.4em] mb-4 block">Actualidad y Análisis</span>
+          <h1 className="text-4xl font-black text-slate-900 sm:text-7xl tracking-tighter mb-6">Centro de Inteligencia</h1>
+          <p className="mt-4 text-xl text-slate-500 font-medium max-w-2xl mx-auto">Noticias, experimentos reales y guías de autoridad para dominar el ecosistema digital.</p>
         </div>
 
         {/* Filter Bar */}

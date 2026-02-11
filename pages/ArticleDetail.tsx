@@ -1,147 +1,125 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ContentBlock } from '../types';
+import { Article } from '../types';
 import ArticleCard from '../components/ArticleCard';
-import { ARTICLES, getArticleById } from '../data/articles';
-import { Clock, Calendar, Linkedin, Twitter, Facebook, Bookmark, ArrowRight, List, Download, CheckCircle2, ChevronRight, MessageSquare, Quote } from 'lucide-react';
+import { getArticleBySlug, getArticles } from '../services/articleService';
+import { Clock, Calendar, Linkedin, Twitter, Facebook, Bookmark, ArrowRight, List, Download, CheckCircle2, ChevronRight, MessageSquare, Quote, Loader2, Tag } from 'lucide-react';
 import pietroPhoto from '../assets/pietro.png';
 import SEO from '../components/SEO';
+import { PortableText } from '@portabletext/react';
 
-const ContentRenderer: React.FC<{ blocks: ContentBlock[] }> = ({ blocks }) => {
-  return (
-    <>
-      {blocks.map((block, index) => {
-        switch (block.type) {
-          case 'paragraph':
-            return <p key={index} className="text-xl text-slate-600 mb-8 font-medium leading-relaxed">{block.text}</p>;
+const portableTextComponents = {
+  block: {
+    h2: ({ children }: any) => <h2 className="text-2xl lg:text-3xl font-black text-slate-900 mt-12 mb-6 tracking-tight">{children}</h2>,
+    h3: ({ children }: any) => <h3 className="text-xl lg:text-2xl font-black text-slate-900 mt-10 mb-4 tracking-tight">{children}</h3>,
+    normal: ({ children }: any) => <p className="text-xl text-slate-600 mb-8 font-medium leading-relaxed">{children}</p>,
+  },
+  types: {
+    image: ({ value }: any) => (
+      <figure className="my-12">
+        <img src={value.asset ? value.asset.url : ''} alt={value.alt || ''} className="w-full rounded-[2.5rem] shadow-xl" />
+        {value.caption && <figcaption className="mt-4 text-center text-sm text-slate-400 font-medium italic">{value.caption}</figcaption>}
+      </figure>
+    ),
+    quote: ({ value }: any) => (
+      <blockquote className="my-16 px-8 sm:px-12 py-14 bg-slate-900 rounded-[3rem] text-white overflow-hidden relative shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] group">
+        <div className="absolute top-0 right-0 -mt-12 -mr-12 h-40 w-40 bg-garfield-500 rounded-full opacity-20 blur-[60px] transition-all group-hover:opacity-30 group-hover:scale-110"></div>
+        <div className="absolute bottom-0 left-0 -mb-12 -ml-12 h-40 w-40 bg-indigo-500 rounded-full opacity-10 blur-[60px]"></div>
+        <span className="absolute -top-6 -left-2 text-[12rem] font-serif leading-none text-white/5 select-none pointer-events-none">“</span>
+        <div className="relative z-10">
+          <div className="flex items-center gap-4 mb-8">
+            <div className="h-12 w-12 rounded-2xl bg-garfield-500/10 border border-garfield-500/20 flex items-center justify-center text-garfield-500 shadow-[0_0_20px_rgba(249,115,22,0.1)]">
+              <Quote size={24} fill="currentColor" />
+            </div>
+            <div className="h-px flex-grow bg-white/10"></div>
+          </div>
+          <p className="text-lg sm:text-xl font-bold italic leading-relaxed mb-6 text-slate-100/90 tracking-tight">"{value.text}"</p>
+          {value.author && (
+            <footer className="flex items-center gap-4">
+              <div className="h-0.5 w-8 bg-garfield-500 rounded-full"></div>
+              <cite className="text-garfield-400 font-black uppercase tracking-[0.3em] text-[0.65rem] not-italic">{value.author}</cite>
+            </footer>
+          )}
+        </div>
+      </blockquote>
+    ),
+    checklist: ({ value }: any) => (
+      <div className="space-y-4 my-8">
+        {value.items.map((item: string, i: number) => (
+          <div key={i} className="flex gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 items-center transition-all hover:bg-white hover:shadow-lg">
+            <div className="h-8 w-8 rounded-full bg-garfield-500 flex items-center justify-center shadow-lg text-white">
+              <CheckCircle2 size={18} />
+            </div>
+            <span className="text-sm font-bold text-slate-700">{item}</span>
+          </div>
+        ))}
+      </div>
+    ),
+    codeBlock: ({ value }: any) => (
+      <div className="my-8 bg-slate-900 rounded-3xl p-8 font-mono text-sm text-garfield-400 overflow-x-auto shadow-2xl">
+        <pre><code>{value.code}</code></pre>
+      </div>
+    )
+  }
+};
 
-          case 'heading':
-            if (block.level === 2) {
-              return <h2 key={index} className="text-2xl lg:text-3xl font-black text-slate-900 mt-12 mb-6 tracking-tight">{block.text}</h2>;
-            }
-            return <h3 key={index} className="text-xl lg:text-2xl font-black text-slate-900 mt-10 mb-4 tracking-tight">{block.text}</h3>;
+const calculateReadTime = (content: any[]): string => {
+  if (!content || !Array.isArray(content)) return '3 min de lectura';
 
-          case 'quote':
-            return (
-              <blockquote key={index} className="my-16 px-8 sm:px-12 py-14 bg-slate-900 rounded-[3rem] text-white overflow-hidden relative shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] group">
-                {/* Decorative background glass elements */}
-                <div className="absolute top-0 right-0 -mt-12 -mr-12 h-40 w-40 bg-garfield-500 rounded-full opacity-20 blur-[60px] transition-all group-hover:opacity-30 group-hover:scale-110"></div>
-                <div className="absolute bottom-0 left-0 -mb-12 -ml-12 h-40 w-40 bg-indigo-500 rounded-full opacity-10 blur-[60px]"></div>
-
-                {/* Large decorative quotation mark */}
-                <span className="absolute -top-6 -left-2 text-[12rem] font-serif leading-none text-white/5 select-none pointer-events-none">“</span>
-
-                <div className="relative z-10">
-                  <div className="flex items-center gap-4 mb-8">
-                    <div className="h-12 w-12 rounded-2xl bg-garfield-500/10 border border-garfield-500/20 flex items-center justify-center text-garfield-500 shadow-[0_0_20px_rgba(249,115,22,0.1)]">
-                      <Quote size={24} fill="currentColor" />
-                    </div>
-                    <div className="h-px flex-grow bg-white/10"></div>
-                  </div>
-
-                  <p className="text-lg sm:text-xl font-bold italic leading-relaxed mb-6 text-slate-100/90 tracking-tight">
-                    "{block.text}"
-                  </p>
-
-                  {block.author && (
-                    <footer className="flex items-center gap-4">
-                      <div className="h-0.5 w-8 bg-garfield-500 rounded-full"></div>
-                      <cite className="text-garfield-400 font-black uppercase tracking-[0.3em] text-[0.65rem] not-italic">
-                        {block.author}
-                      </cite>
-                    </footer>
-                  )}
-                </div>
-              </blockquote>
-            );
-
-          case 'list':
-            return (
-              <ul key={index} className="space-y-4 my-8 list-none">
-                {block.items.map((item, i) => (
-                  <li key={i} className="flex items-start gap-4">
-                    <div className="h-2 w-2 rounded-full bg-garfield-500 mt-2 flex-shrink-0" />
-                    <span className="text-lg text-slate-600 font-medium">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            );
-
-          case 'table':
-            return (
-              <div key={index} className="my-10 bg-slate-50 rounded-3xl p-8 border border-slate-100">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm text-left">
-                    <thead>
-                      <tr className="border-b border-slate-200">
-                        {block.headers.map((header, i) => (
-                          <th key={i} className="py-3 font-black uppercase tracking-widest text-[0.6rem]">{header}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {block.rows.map((row, i) => (
-                        <tr key={i} className="border-b border-slate-100 last:border-0">
-                          {row.map((cell, j) => (
-                            <td key={j} className={`py-4 font-bold ${j === 1 && cell.includes('-') ? 'text-red-500' : j === 1 && cell.includes('+') ? 'text-green-500' : ''}`}>
-                              {cell}
-                            </td>
-                          ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            );
-
-          case 'checklist':
-            return (
-              <div key={index} className="space-y-4 my-8">
-                {block.items.map((item, i) => (
-                  <div key={i} className="flex gap-4 p-5 rounded-2xl bg-slate-50 border border-slate-100 items-center transition-all hover:bg-white hover:shadow-lg">
-                    <div className="h-8 w-8 rounded-full bg-garfield-500 flex items-center justify-center shadow-lg text-white">
-                      <CheckCircle2 size={18} />
-                    </div>
-                    <span className="text-sm font-bold text-slate-700">{item}</span>
-                  </div>
-                ))}
-              </div>
-            );
-
-          case 'code':
-            return (
-              <div key={index} className="my-8 bg-slate-900 rounded-3xl p-8 font-mono text-sm text-garfield-400 overflow-x-auto shadow-2xl">
-                <pre><code>{block.code}</code></pre>
-              </div>
-            );
-
-          case 'image':
-            return (
-              <figure key={index} className="my-12">
-                <img src={block.url} alt={block.caption || ''} className="w-full rounded-[2.5rem] shadow-xl" />
-                {block.caption && <figcaption className="mt-4 text-center text-sm text-slate-400 font-medium italic">{block.caption}</figcaption>}
-              </figure>
-            );
-
-          default:
-            return null;
+  // Count words in normal text blocks
+  let wordCount = 0;
+  content.forEach(block => {
+    if (block._type === 'block' && block.children) {
+      block.children.forEach((span: any) => {
+        if (span.text) {
+          wordCount += span.text.split(/\s+/).length;
         }
-      })}
-    </>
-  );
+      });
+    }
+  });
+
+  const wordsPerMinute = 200;
+  const minutes = Math.ceil(wordCount / wordsPerMinute);
+  return `${minutes} min de lectura`;
 };
 
 const ArticleDetail: React.FC = () => {
-  const { id } = useParams();
-  const articleData = getArticleById(id);
-
-  const relatedArticles = ARTICLES.filter(a => a.category === articleData?.category && a.id !== id).slice(0, 2);
-  const sidebarArticles = ARTICLES.filter(a => a.id !== id).slice(0, 3);
+  const { id } = useParams(); // URL param is 'id' but it's the slug
+  const [articleData, setArticleData] = useState<Article | null>(null);
+  const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
+  const [sidebarArticles, setSidebarArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchArticle = async () => {
+      if (!id) return;
+      setLoading(true);
+      try {
+        const data = await getArticleBySlug(id);
+        setArticleData(data);
+
+        if (data) {
+          const allArticles = await getArticles();
+          setRelatedArticles(allArticles.filter(a => a.category === data.category && a.slug !== id).slice(0, 2));
+          setSidebarArticles(allArticles.filter(a => a.slug !== id).slice(0, 3));
+        }
+      } catch (error) {
+        console.error("Error fetching article:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchArticle();
     window.scrollTo(0, 0);
   }, [id]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <Loader2 className="animate-spin text-garfield-500" size={48} />
+      </div>
+    );
+  }
 
   if (!articleData) {
     return (
@@ -157,31 +135,64 @@ const ArticleDetail: React.FC = () => {
   }
 
   const baseUrl = 'https://soygarfield.com';
+  const isoDate = articleData.date; // Sanity returns YYYY-MM-DD
+  const displayReadTime = articleData.readTime || calculateReadTime(articleData.content as any[]);
+  const authorLink = articleData.authorSlug ? `/author/${articleData.authorSlug}` : '/about';
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Inicio",
+        "item": baseUrl
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": articleData.category,
+        "item": `${baseUrl}/category/${articleData.category.toLowerCase()}`
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": articleData.title,
+        "item": `${baseUrl}/article/${articleData.slug}`
+      }
+    ]
+  };
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "headline": articleData.title,
-    "image": articleData.imageUrl.startsWith('http') ? articleData.imageUrl : `${baseUrl}${articleData.imageUrl}`,
+    "headline": articleData.seoTitle || articleData.title,
+    "image": articleData.imageUrl,
     "author": {
       "@type": "Person",
       "name": articleData.author,
-      "url": "https://soygarfield.com/about"
+      "url": `${baseUrl}${authorLink}`
     },
     "publisher": {
       "@type": "Organization",
       "name": "Soy Garfield",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://soygarfield.com/assets/pietro.png"
+        "url": `${baseUrl}/assets/pietro.png`
       }
     },
-    "datePublished": articleData.date,
-    "description": articleData.excerpt,
+    "datePublished": isoDate,
+    "dateModified": isoDate,
+    "description": articleData.seoDescription || articleData.excerpt,
+    "isAccessibleForFree": "True",
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": `https://soygarfield.com/article/${articleData.id}`
+      "@id": `${baseUrl}/article/${articleData.slug}`
     }
   };
+
+  const combinedSchema = [articleSchema, breadcrumbSchema];
 
   const shareOnLinkedIn = () => {
     const url = encodeURIComponent(window.location.href);
@@ -197,13 +208,15 @@ const ArticleDetail: React.FC = () => {
   return (
     <div className="min-h-screen bg-white pb-20">
       <SEO
-        title={articleData.title}
-        description={articleData.excerpt}
+        title={articleData.seoTitle || articleData.title}
+        description={articleData.seoDescription || articleData.excerpt}
         image={articleData.imageUrl}
         article={true}
-        date={articleData.date}
+        author={articleData.author}
+        date={isoDate}
+        modifiedDate={isoDate}
         category={articleData.category}
-        schemaData={articleSchema}
+        schemaData={combinedSchema}
       />
       <div className="fixed top-0 left-0 w-full h-1.5 z-[150] bg-slate-100">
         <div className="h-full bg-garfield-500 w-1/3 transition-all duration-300 shadow-[0_0_10px_rgb(249,115,22,0.5)]"></div>
@@ -232,7 +245,7 @@ const ArticleDetail: React.FC = () => {
                 </span>
                 <div className="flex items-center gap-2 text-[0.65rem] font-black text-slate-400 uppercase tracking-[0.2em]">
                   <Clock size={16} />
-                  <span>{articleData.readTime}</span>
+                  <span>{displayReadTime}</span>
                 </div>
               </div>
 
@@ -240,10 +253,21 @@ const ArticleDetail: React.FC = () => {
                 {articleData.title}
               </h1>
 
+              {articleData.tags && articleData.tags.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {articleData.tags.map((tag) => (
+                    <span key={tag} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 text-[0.6rem] font-black text-slate-500 uppercase tracking-widest border border-slate-200">
+                      <Tag size={12} />
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-8 border-y border-slate-100 py-6">
-                <Link to="/about" className="flex items-center gap-5 group">
+                <Link to={authorLink} className="flex items-center gap-5 group">
                   <div className="h-12 w-12 rounded-2xl bg-garfield-100 overflow-hidden ring-4 ring-slate-50 shadow-inner transition-transform group-hover:scale-110">
-                    <img src={pietroPhoto} alt={articleData.author} className="h-full w-full object-cover" />
+                    <img src={articleData.authorImage || pietroPhoto} alt={articleData.author} className="h-full w-full object-cover" />
                   </div>
                   <div>
                     <div className="text-sm font-black text-slate-900 uppercase tracking-[0.1em] leading-none mb-1.5 group-hover:text-garfield-600 transition-colors">{articleData.author}</div>
@@ -255,8 +279,12 @@ const ArticleDetail: React.FC = () => {
                 </Link>
 
                 <div className="flex items-center gap-2">
-                  <button onClick={shareOnTwitter} className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Twitter size={18} /></button>
-                  <button onClick={shareOnLinkedIn} className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Linkedin size={18} /></button>
+                  {articleData.authorTwitter && (
+                    <a href={articleData.authorTwitter} target="_blank" rel="noopener noreferrer" className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Twitter size={18} /></a>
+                  )}
+                  {articleData.authorLinkedIn && (
+                    <a href={articleData.authorLinkedIn} target="_blank" rel="noopener noreferrer" className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Linkedin size={18} /></a>
+                  )}
                   <button className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Facebook size={18} /></button>
                   <div className="h-6 w-px bg-slate-100 mx-2"></div>
                   <button className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-garfield-600 hover:bg-garfield-50 rounded-xl transition-all border border-slate-100"><Bookmark size={18} /></button>
@@ -273,7 +301,7 @@ const ArticleDetail: React.FC = () => {
             </div>
 
             <article className="max-w-none">
-              <ContentRenderer blocks={articleData.content} />
+              <PortableText value={articleData.content as any} components={portableTextComponents} />
 
               <div className="my-16 flex flex-col sm:flex-row items-center justify-center gap-4 py-12 border-y border-slate-100">
                 <span className="text-sm font-black text-slate-900 uppercase tracking-widest text-center sm:text-left">¿Te ha gustado este artículo?</span>
@@ -310,20 +338,20 @@ const ArticleDetail: React.FC = () => {
             <div className="mt-24 bg-slate-900 rounded-[3rem] p-12 text-white relative overflow-hidden group">
               <div className="absolute top-0 right-0 -mt-20 -mr-20 h-64 w-64 bg-garfield-500 rounded-full opacity-10 blur-3xl transition-all group-hover:opacity-20"></div>
               <div className="relative z-10 flex flex-col sm:flex-row gap-10 items-center text-center sm:text-left">
-                <Link to="/about" className="h-32 w-32 rounded-[2.5rem] bg-white/10 p-2 flex-shrink-0 transition-transform group-hover:rotate-6 overflow-hidden block">
+                <Link to={authorLink} className="h-32 w-32 rounded-[2.5rem] bg-white/10 p-2 flex-shrink-0 transition-transform group-hover:rotate-6 overflow-hidden block">
                   <img
-                    src={pietroPhoto}
-                    alt="Pietro Fiorillo"
+                    src={articleData.authorImage || pietroPhoto}
+                    alt={articleData.author}
                     className="h-full w-full rounded-[2rem] object-cover"
                   />
                 </Link>
                 <div>
-                  <span className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-garfield-400 mb-3 block">Experto en Marketing Digital e IA</span>
-                  <Link to="/about" className="text-3xl font-black mb-4 leading-none block hover:text-garfield-500 transition-colors">Pietro Fiorillo</Link>
+                  <span className="text-[0.6rem] font-black uppercase tracking-[0.4em] text-garfield-400 mb-3 block">{articleData.authorRole || 'Experto en Marketing Digital e IA'}</span>
+                  <Link to={authorLink} className="text-3xl font-black mb-4 leading-none block hover:text-garfield-500 transition-colors">{articleData.author}</Link>
                   <p className="text-sm text-slate-400 font-medium leading-relaxed mb-8 max-w-xl">
-                    Consultor estratégico ayudando a empresas a navegar la transición hacia un futuro impulsado por la inteligencia artificial. Especialista en SEO técnico y automatización inteligente.
+                    {articleData.authorBio || 'Consultor estratégico ayudando a empresas a navegar la transición hacia un futuro impulsado por la inteligencia artificial. Especialista en SEO técnico y automatización inteligente.'}
                   </p>
-                  <Link to="/about" className="inline-flex items-center gap-3 text-xs font-black uppercase tracking-[0.3em] text-white hover:text-garfield-500 transition-all">
+                  <Link to={authorLink} className="inline-flex items-center gap-3 text-xs font-black uppercase tracking-[0.3em] text-white hover:text-garfield-500 transition-all">
                     Descubre mi trayectoria <ArrowRight size={16} />
                   </Link>
                 </div>

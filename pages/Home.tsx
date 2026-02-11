@@ -1,27 +1,96 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ArticleCard from '../components/ArticleCard';
-import { ARTICLES } from '../data/articles';
-import { ArrowRight, TrendingUp, Mail, Clock } from 'lucide-react';
+import { getArticles } from '../services/articleService';
+import { Article } from '../types';
+import { ArrowRight, TrendingUp, Mail, Clock, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import pietroPhoto from '../assets/pietro.png';
 import SEO from '../components/SEO';
+import BreakingNewsTicker from '../components/BreakingNewsTicker';
 
 const Home: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'latest' | 'popular'>('latest');
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const mainStory = ARTICLES[0]; // SGE article
-  const sidebarArticles = ARTICLES.slice(1);
-  const suggestedArticles = ARTICLES.slice(0, 3);
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const data = await getArticles();
+        setArticles(data);
+      } catch (error) {
+        console.error("Error fetching articles:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchArticles();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <Loader2 className="animate-spin text-garfield-500" size={48} />
+      </div>
+    );
+  }
+
+  // Fallback in case of no articles
+  if (articles.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white px-4">
+        <div className="text-center">
+          <h2 className="text-2xl font-black text-slate-900 mb-4 uppercase tracking-tighter">Próximamente más contenido</h2>
+          <p className="text-slate-500 mb-8">Estamos preparando las mejores estrategias de SEO & IA para ti.</p>
+        </div>
+      </div>
+    );
+  }
+
+  const mainStory = articles[0];
+  const sidebarArticles = articles.slice(1, 5);
+  const suggestedArticles = articles.slice(0, 3);
 
   return (
     <main className="min-h-screen bg-white font-sans text-slate-900 pb-20 lg:pb-0">
       <SEO
-        title="SEO & IA Expert"
-        description="Domina el futuro del marketing digital con estrategias avanzadas de SEO e Inteligencia Artificial de la mano de Pietro Fiorillo."
+        title="Noticias de SEO & IA - Soy Garfield"
+        description="El medio de referencia para dominar el futuro del marketing digital con noticias de última hora y estrategias avanzadas de IA."
+        schemaData={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "WebSite",
+              "@id": "https://soygarfield.com/#website",
+              "url": "https://soygarfield.com",
+              "name": "Soy Garfield",
+              "description": "Consultoría estratégica de SEO e Inteligencia Artificial",
+              "publisher": { "@id": "https://soygarfield.com/#organization" },
+              "inLanguage": "es"
+            },
+            {
+              "@type": "Organization",
+              "@id": "https://soygarfield.com/#organization",
+              "name": "Soy Garfield",
+              "url": "https://soygarfield.com",
+              "logo": {
+                "@type": "ImageObject",
+                "url": "https://soygarfield.com/assets/pietro.png"
+              },
+              "sameAs": [
+                "https://linkedin.com/in/pietrofiorillo",
+                "https://twitter.com/pietrofiorillo"
+              ]
+            }
+          ]
+        }}
       />
 
+      {/* Breaking News Ticker */}
+      <BreakingNewsTicker />
+
       {/* Hidden H1 for SEO */}
-      <h1 className="sr-only">Soy Garfield | SEO y Marketing con IA</h1>
+      <h1 className="sr-only">Noticias de SEO & IA</h1>
 
       {/* Top Stories Section */}
       <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 lg:py-12">
@@ -29,10 +98,10 @@ const Home: React.FC = () => {
 
           {/* Main Story (Left Column) */}
           <div className="lg:col-span-8">
-            <Link to={`/article/${mainStory.id}`} className="group block">
+            <Link to={`/article/${mainStory.slug}`} className="group block">
               <div className="relative aspect-[16/9] sm:aspect-video w-full overflow-hidden rounded-3xl mb-6 shadow-2xl">
                 <img
-                  src={mainStory.imageUrl}
+                  src={mainStory.imageUrl || pietroPhoto}
                   alt={mainStory.title}
                   className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
@@ -59,11 +128,15 @@ const Home: React.FC = () => {
 
             {/* Author Section Separate from Article Link for better UX */}
             <div className="hidden lg:flex items-center gap-4 text-xs text-slate-400 font-bold uppercase tracking-widest mt-6">
-              <Link to="/about" className="flex items-center gap-2 group/author">
-                <div className="h-8 w-8 rounded-xl bg-garfield-100 flex items-center justify-center overflow-hidden transition-transform group-hover/author:scale-110 ring-2 ring-white shadow-sm font-black">
-                  <img src={pietroPhoto} alt={mainStory.author} className="h-full w-full object-cover" />
+              <Link to={mainStory.authorSlug ? `/author/${mainStory.authorSlug}` : '/about'} className="flex items-center gap-2 group/author">
+                <div className="h-8 w-8 rounded-xl bg-garfield-500 flex items-center justify-center overflow-hidden transition-transform group-hover/author:scale-110 ring-2 ring-white shadow-sm font-black text-[0.5rem]">
+                  {mainStory.authorImage ? (
+                    <img src={mainStory.authorImage} alt={mainStory.author} className="h-full w-full object-cover" />
+                  ) : (
+                    <span className="text-white">{mainStory.author?.charAt(0)}</span>
+                  )}
                 </div>
-                <span className="text-slate-900 group-hover/author:text-garfield-600 transition-colors">{mainStory.author}</span>
+                <span className="text-slate-900 group-hover/author:text-garfield-600 transition-colors">{mainStory.author || 'Pietro Fiorillo'}</span>
               </Link>
               <span>•</span>
               <span>{mainStory.date}</span>
@@ -82,7 +155,7 @@ const Home: React.FC = () => {
               <div className="flex items-center justify-between mb-8">
                 <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-900 flex items-center gap-2">
                   <TrendingUp size={18} className="text-garfield-500" />
-                  Tendencias
+                  Actualidad
                 </h3>
               </div>
 
@@ -108,8 +181,8 @@ const Home: React.FC = () => {
               </div>
 
               <div className="mt-8">
-                <Link to="/blog" className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-slate-50 hover:bg-slate-100 text-xs font-black uppercase tracking-widest text-slate-900 transition-all group">
-                  Ver todas las noticias
+                <Link to="/category/seo" className="flex items-center justify-center gap-2 w-full py-4 rounded-2xl bg-slate-50 hover:bg-slate-100 text-xs font-black uppercase tracking-widest text-slate-900 transition-all group">
+                  Ver toda la actualidad
                   <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
                 </Link>
               </div>

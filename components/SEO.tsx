@@ -9,8 +9,10 @@ interface SEOProps {
     article?: boolean;
     author?: string;
     date?: string;
+    modifiedDate?: string;
     category?: string;
     schemaData?: any;
+    keywords?: string;
 }
 
 const SEO: React.FC<SEOProps> = ({
@@ -20,24 +22,28 @@ const SEO: React.FC<SEOProps> = ({
     article,
     author = 'Pietro Fiorillo',
     date,
+    modifiedDate,
     category,
-    schemaData
+    schemaData,
+    keywords
 }) => {
     const { pathname } = useLocation();
     const siteName = 'Soy Garfield';
-    const baseUrl = 'https://soygarfield.com'; // Change this to your actual domain
+    const baseUrl = 'https://soygarfield.com';
     const fullUrl = `${baseUrl}${pathname}`;
 
     const defaultDescription = 'Consultoría estratégica de SEO e Inteligencia Artificial. Domina el futuro digital con Pietro Fiorillo.';
-    const defaultImage = `${baseUrl}/pietro-og.png`; // Fallback image
+    const defaultImage = `${baseUrl}/pietro-og.png`;
 
     const seoTitle = title ? `${title} | ${siteName}` : `${siteName} | SEO & IA Expert`;
     const seoDescription = description || defaultDescription;
 
-    // Ensure image is an absolute URL
     let seoImage = image || defaultImage;
     if (seoImage.startsWith('/')) {
         seoImage = `${baseUrl}${seoImage}`;
+    } else if (!seoImage.startsWith('http')) {
+        // Handle images that might be relative but not starting with /
+        seoImage = `${baseUrl}/${seoImage}`;
     }
 
     return (
@@ -45,12 +51,15 @@ const SEO: React.FC<SEOProps> = ({
             {/* Basic Meta Tags */}
             <title>{seoTitle}</title>
             <meta name="description" content={seoDescription} />
+            <meta name="author" content={author} />
+            {keywords && <meta name="keywords" content={keywords} />}
             <meta name="image" content={seoImage} />
             <link rel="canonical" href={fullUrl} />
 
             {/* Google Discover & News Optimization */}
-            <meta name="robots" content="max-image-preview:large, index, follow" />
-            <meta name="googlebot" content="max-image-preview:large" />
+            <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+            <meta name="googlebot" content="index, follow, max-image-preview:large" />
+            <meta name="bingbot" content="index, follow, max-image-preview:large" />
 
             {/* Open Graph / Facebook */}
             <meta property="og:type" content={article ? 'article' : 'website'} />
@@ -58,8 +67,10 @@ const SEO: React.FC<SEOProps> = ({
             <meta property="og:title" content={seoTitle} />
             <meta property="og:description" content={seoDescription} />
             <meta property="og:image" content={seoImage} />
+            <meta property="og:image:secure_url" content={seoImage} />
             <meta property="og:image:alt" content={seoTitle} />
             <meta property="og:site_name" content={siteName} />
+            <meta property="og:locale" content="es_ES" />
 
             {/* Twitter */}
             <meta name="twitter:card" content="summary_large_image" />
@@ -74,11 +85,21 @@ const SEO: React.FC<SEOProps> = ({
             {/* Article Specific Tags */}
             {article && (
                 <>
-                    {author && <meta property="article:author" content={author} />}
+                    <meta property="article:author" content={author} />
                     {date && <meta property="article:published_time" content={date} />}
+                    {modifiedDate && <meta property="article:modified_time" content={modifiedDate} />}
                     {category && <meta property="article:section" content={category} />}
+                    <meta property="og:type" content="article" />
                 </>
             )}
+
+            {/* Performance Hints */}
+            <link rel="preconnect" href="https://fonts.googleapis.com" />
+            <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+            <link rel="preconnect" href="https://images.unsplash.com" />
+
+            {/* Preload hero image if it exists */}
+            {seoImage && <link rel="preload" as="image" href={seoImage} />}
 
             {/* Structured Data */}
             {schemaData ? (

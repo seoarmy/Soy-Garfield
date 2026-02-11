@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, MapPin, Send, MessageSquare, CheckCircle, ArrowRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -53,6 +54,23 @@ const Contact: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <SEO
+        title="Contacto"
+        description="¿Tienes preguntas sobre SEO o IA? Ponte en contacto con Pietro Fiorillo para consultorías o colaboraciones."
+        schemaData={{
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          "name": "Contacto - Soy Garfield",
+          "description": "¿Tienes alguna pregunta sobre SEO, una propuesta de colaboración o simplemente quieres saludar?",
+          "url": "https://soygarfield.com/contact",
+          "mainEntity": {
+            "@type": "Person",
+            "name": "Pietro Fiorillo",
+            "email": "hello@soygarfield.com",
+            "jobTitle": "SEO & IA Architect"
+          }
+        }}
+      />
       {/* Header Section */}
       <div className="bg-slate-50 border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24 text-center">
@@ -128,9 +146,9 @@ const Contact: React.FC = () => {
                 <p className="text-slate-300 text-sm mb-6 max-w-xs">
                   Obtén un análisis exhaustivo del rendimiento de tu sitio por nuestro equipo.
                 </p>
-                <a href="/write" className="inline-flex items-center text-sm font-bold text-white hover:text-garfield-400 transition-colors">
+                <Link to="/write" className="inline-flex items-center text-sm font-bold text-white hover:text-garfield-400 transition-colors">
                   Solicitar Auditoría <ArrowRight size={16} className="ml-2" />
-                </a>
+                </Link>
               </div>
               <div className="absolute right-0 bottom-0 opacity-10 transform translate-x-1/4 translate-y-1/4">
                 <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">

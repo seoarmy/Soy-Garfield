@@ -50,8 +50,8 @@ const Navbar: React.FC = () => {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${scrolled
-            ? 'bg-white/90 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] py-3 border-b border-slate-100'
-            : 'bg-white py-5 border-b border-white'
+          ? 'bg-white/90 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] py-3 border-b border-slate-100'
+          : 'bg-white py-5 border-b border-white'
           }`}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -84,23 +84,23 @@ const Navbar: React.FC = () => {
                     key={item.label}
                     to={item.path}
                     className={`px-5 py-2.5 text-[0.7rem] font-black transition-all uppercase tracking-[0.2em] rounded-xl relative overflow-hidden group/link ${location.pathname === item.path
-                        ? 'text-garfield-600 bg-garfield-50'
-                        : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                      ? 'text-garfield-600 bg-garfield-50'
+                      : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                       }`}
                   >
                     <span className="relative z-10">{item.label}</span>
                   </Link>
                 ))}
                 <Link
-                  to="/blog"
-                  className={`px-5 py-2.5 text-[0.7rem] font-black transition-all uppercase tracking-[0.2em] rounded-xl group/link ${location.pathname === '/blog'
-                      ? 'text-garfield-600 bg-garfield-50'
-                      : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                  to="/author/pietro-fiorillo"
+                  className={`px-5 py-2.5 text-[0.7rem] font-black transition-all uppercase tracking-[0.2em] rounded-xl group/link ${location.pathname === '/author/pietro-fiorillo'
+                    ? 'text-garfield-600 bg-garfield-50'
+                    : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                     }`}
                 >
                   <span className="relative z-10 flex items-center gap-2">
-                    <BookOpen size={14} className="opacity-50" />
-                    Artículos
+                    <User size={14} className="opacity-50" />
+                    Sobre Mí
                   </span>
                 </Link>
               </nav>
@@ -145,8 +145,8 @@ const Navbar: React.FC = () => {
       {/* FULL SCREEN MOBILE OVERLAY */}
       <div
         className={`fixed inset-0 z-[140] bg-white lg:hidden transition-all duration-500 flex flex-col ${isOpen
-            ? 'opacity-100 pointer-events-auto visible'
-            : 'opacity-0 pointer-events-none invisible'
+          ? 'opacity-100 pointer-events-auto visible'
+          : 'opacity-0 pointer-events-none invisible'
           }`}
       >
         {/* Safe Area / Top Spacer */}
@@ -206,12 +206,12 @@ const Navbar: React.FC = () => {
                 </Link>
               ))}
 
-              <Link to="/blog" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+              <Link to="/author/pietro-fiorillo" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
                 <div className="flex items-center gap-4">
                   <div className="p-2.5 bg-white rounded-2xl shadow-sm text-slate-900 group-hover:text-garfield-600 transition-colors">
-                    <BookOpen size={20} />
+                    <User size={20} />
                   </div>
-                  <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-900">Blog Completo</span>
+                  <span className="text-xs font-black uppercase tracking-[0.2em] text-slate-900">Sobre Mí</span>
                 </div>
                 <ChevronRight size={16} className="text-slate-300 group-hover:text-garfield-600 transition-all group-hover:translate-x-1" />
               </Link>

@@ -1,6 +1,8 @@
 export enum Category {
   SEO = 'SEO',
   IA = 'IA',
+  SOCIAL = 'Social Media',
+  ANALYTICS = 'Analítica',
 }
 
 export type ContentBlock =
@@ -16,11 +18,21 @@ export type ContentBlock =
 export interface Article {
   id: string;
   title: string;
+  slug: string;
   excerpt: string;
   author: string;
+  authorSlug?: string;
+  authorRole?: string;
+  authorImage?: string;
+  authorBio?: string;
+  authorLinkedIn?: string;
+  authorTwitter?: string;
+  seoTitle?: string;
+  seoDescription?: string;
   date: string;
   category: Category;
   readTime: string;
+  tags?: string[];
   imageUrl: string;
   isFeatured?: boolean;
   content: ContentBlock[];

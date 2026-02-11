@@ -7,8 +7,8 @@ const Sitemap: React.FC = () => {
     <div className="min-h-screen bg-slate-50 py-16 lg:py-24">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl mb-4">Mapa del Sitio</h1>
-          <p className="text-slate-500">Una visión general del contenido disponible en SoyGarfield.</p>
+          <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl mb-4">Mapa del Medio</h1>
+          <p className="text-slate-500">Explora la estructura completa de nuestro centro de inteligencia.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -22,8 +22,7 @@ const Sitemap: React.FC = () => {
             </div>
             <ul className="space-y-4">
               <li><Link to="/" className="text-slate-600 hover:text-garfield-600 font-medium block">Inicio</Link></li>
-              <li><Link to="/blog" className="text-slate-600 hover:text-garfield-600 font-medium block">Noticias y Análisis</Link></li>
-              <li><Link to="/about" className="text-slate-600 hover:text-garfield-600 font-medium block">Sobre Pietro Fiorillo</Link></li>
+              <li><Link to="/authors" className="text-slate-600 hover:text-garfield-600 font-medium block">Nuestro Equipo</Link></li>
               <li><Link to="/contact" className="text-slate-600 hover:text-garfield-600 font-medium block">Contacto</Link></li>
               <li><Link to="/write" className="text-slate-600 hover:text-garfield-600 font-medium block">Escribe para nosotros</Link></li>
             </ul>

@@ -1,0 +1,60 @@
+{
+    "_type": "article",
+    "title": "Agentes de IA: La Nueva Frontera del SEO en 2024",
+    "slug": {
+        "_type": "slug",
+        "current": "agentes-ia-nueva-frontera-seo-2024"
+    },
+    "excerpt": "Cómo los agentes autónomos de búsqueda están redefiniendo el rastreo y la indexación, y qué debes hacer para que tu marca no desaparezca de los resultados de búsqueda generativa.",
+    "author": "Pietro Fiorillo",
+    "date": "2024-02-11",
+    "category": "IA",
+    "readTime": "8 min",
+    "isFeatured": true,
+    "content": [
+        {
+            "_type": "block",
+            "style": "normal",
+            "children": [
+                {
+                    "_type": "span",
+                    "text": "El panorama del SEO está sufriendo una metamorfosis sin precedentes. Ya no se trata solo de optimizar para un algoritmo de búsqueda estático, sino de ser 'entendidos' por agentes de IA que navegan por la web de forma autónoma."
+                }
+            ]
+        },
+        {
+            "_type": "quote",
+            "text": "La IA no va a reemplazar al SEO, pero el SEO que usa IA reemplazará al que no la usa.",
+            "author": "Pietro Fiorillo"
+        },
+        {
+            "_type": "block",
+            "style": "h2",
+            "children": [
+                {
+                    "_type": "span",
+                    "text": "Estrategias Clave para 2024"
+                }
+            ]
+        },
+        {
+            "_type": "checklist",
+            "items": [
+                "Optimización de Fragmentos Enriquecidos Semánticos",
+                "Estructura de Datos para Motores de Respuesta",
+                "Autoridad de Entidad (E-E-A-T) Reforzada",
+                "Velocidad de Carga Core Web Vitals"
+            ]
+        },
+        {
+            "_type": "block",
+            "style": "normal",
+            "children": [
+                {
+                    "_type": "span",
+                    "text": "Para sobrevivir en este nuevo entorno, tu contenido debe ser estructurado, semántico y, sobre todo, aportar un valor humano que la IA no pueda replicar fácilmente."
+                }
+            ]
+        }
+    ]
+}
