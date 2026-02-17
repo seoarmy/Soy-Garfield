@@ -1,5 +1,5 @@
 import React from 'react';
-import { Zap, Twitter, Linkedin, Github } from 'lucide-react';
+import { Zap, Linkedin, Instagram } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
@@ -49,9 +49,8 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-xs font-bold text-slate-900 tracking-widest uppercase mb-6">Conecta</h3>
             <div className="flex space-x-4 mb-6">
-              <a href="#" className="text-slate-400 hover:text-garfield-500 transition-colors"><Twitter size={20} /></a>
-              <a href="#" className="text-slate-400 hover:text-garfield-500 transition-colors"><Linkedin size={20} /></a>
-              <a href="#" className="text-slate-400 hover:text-garfield-500 transition-colors"><Github size={20} /></a>
+              <a href="https://es.linkedin.com/in/pietrofiorillo" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-garfield-500 transition-colors"><Linkedin size={20} /></a>
+              <a href="https://www.instagram.com/theseoarmy/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-garfield-500 transition-colors"><Instagram size={20} /></a>
             </div>
             <div className="p-4 bg-slate-50 rounded-xl border border-slate-100">
               <p className="text-xs text-slate-500 mb-2 font-medium">Suscríbete a las novedades</p>

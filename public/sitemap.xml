@@ -1,68 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://soygarfield.com/</loc>
-    <lastmod>2024-02-10</lastmod>
+    <loc>https://soygarfield.com</loc>
+    <lastmod>2026-02-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://soygarfield.com/blog</loc>
-    <lastmod>2024-02-10</lastmod>
-    <changefreq>daily</changefreq>
+    <loc>https://soygarfield.com/about</loc>
+    <lastmod>2026-02-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/contact</loc>
+    <lastmod>2026-02-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/authors</loc>
+    <lastmod>2026-02-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/write</loc>
+    <lastmod>2026-02-17</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://soygarfield.com/category/seo</loc>
-    <lastmod>2024-02-10</lastmod>
+    <lastmod>2026-02-17</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://soygarfield.com/category/ia</loc>
-    <lastmod>2024-02-10</lastmod>
+    <lastmod>2026-02-17</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://soygarfield.com/about</loc>
-    <lastmod>2024-02-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/contact</loc>
-    <lastmod>2024-02-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/article/sge-google-2025</loc>
-    <lastmod>2024-01-28</lastmod>
+    <loc>https://soygarfield.com/article/como-hacer-seo-local-en-90-dias</loc>
+    <lastmod>2026-02-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://soygarfield.com/article/agentes-ia-marketing</loc>
-    <lastmod>2024-01-25</lastmod>
+    <loc>https://soygarfield.com/article/openai-confirma-anuncios</loc>
+    <lastmod>2026-02-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://soygarfield.com/article/eeat-branding-personal</loc>
-    <lastmod>2024-01-22</lastmod>
+    <loc>https://soygarfield.com/article/seo-con-ia-supera-los-4-filtros-invisibles</loc>
+    <lastmod>2026-02-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://soygarfield.com/article/prompt-engineering-seo</loc>
-    <lastmod>2024-01-19</lastmod>
+    <loc>https://soygarfield.com/article/necesitas-web-en-2026-para-hacer-seo</loc>
+    <lastmod>2026-02-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://soygarfield.com/article/coste-seo-wordpress-lento-ia</loc>
-    <lastmod>2024-01-30</lastmod>
+    <loc>https://soygarfield.com/article/airbnb-confirma-trafico-ia-convierte-mas-que-google</loc>
+    <lastmod>2026-02-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/article/google-lanza-webmcp</loc>
+    <lastmod>2026-02-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/article/Ia-obliga-seo-a-pasar-del-ranking-a-la-demanda</loc>
+    <lastmod>2026-02-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/article/error-en-http-afecta-tu-seo-tecnico</loc>
+    <lastmod>2026-02-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/article/google-mezcla-redes-noticias-asi-debes-optimizar-en-2026</loc>
+    <lastmod>2026-02-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>

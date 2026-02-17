@@ -36,8 +36,7 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/category/:slug" element={<CategoryPage />} />
-              {/* Redirect /about to main author profile */}
-              <Route path="/about" element={<Navigate to="/author/pietro-fiorillo" replace />} />
+              <Route path="/about" element={<About />} />
               <Route path="/write" element={<Write />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/article/:id" element={<ArticleDetail />} />

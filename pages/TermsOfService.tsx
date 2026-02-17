@@ -1,8 +1,34 @@
-import React from 'react';
+import SEO from '../components/SEO';
 
 const TermsOfService: React.FC = () => {
   return (
     <div className="min-h-screen bg-white py-16 lg:py-24">
+      <SEO
+        title="Términos de Servicio"
+        description="Lee nuestros términos de servicio para entender las condiciones de uso de Soy Garfield."
+        schemaData={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Inicio",
+                  "item": "https://soygarfield.com"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Términos",
+                  "item": "https://soygarfield.com/terms"
+                }
+              ]
+            }
+          ]
+        }}
+      />
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl mb-4">Términos de Servicio</h1>
@@ -57,7 +83,7 @@ const TermsOfService: React.FC = () => {
 
           <h2>7. Contáctenos</h2>
           <p>
-            Si tiene alguna pregunta sobre estos Términos, contáctenos en <a href="mailto:hello@soygarfield.com">hello@soygarfield.com</a>.
+            Si tiene alguna pregunta sobre estos Términos, contáctenos en <a href="mailto:marketing@manyadigital.com.ar">marketing@manyadigital.com.ar</a>.
           </p>
         </div>
       </div>

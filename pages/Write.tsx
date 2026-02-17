@@ -3,6 +3,8 @@ import { WriterForm } from '../types';
 import { Send, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+import SEO from '../components/SEO';
+
 const Write: React.FC = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState<WriterForm>({
@@ -50,6 +52,28 @@ const Write: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 py-16 lg:py-24">
+      <SEO
+        title="Colabora con Nosotros"
+        description="Únete al equipo editorial de Soy Garfield. Buscamos expertos en SEO e IA que quieran compartir su conocimiento."
+        schemaData={{
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Inicio",
+              "item": "https://soygarfield.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Escribir",
+              "item": "https://soygarfield.com/write"
+            }
+          ]
+        }}
+      />
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <div className="mb-10 text-center">
           <span className="inline-block rounded-full bg-orange-100 px-3 py-1 text-xs font-medium text-orange-600 mb-4">

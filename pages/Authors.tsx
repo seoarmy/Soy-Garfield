@@ -38,9 +38,30 @@ const Authors: React.FC = () => {
                 description="Conoce a los especialistas en SEO e IA que crean contenido de autoridad para Soy Garfield."
                 schemaData={{
                     "@context": "https://schema.org",
-                    "@type": "CollectionPage",
-                    "name": "Equipo de Autores",
-                    "description": "Especialistas en SEO e Inteligencia Artificial"
+                    "@graph": [
+                        {
+                            "@type": "BreadcrumbList",
+                            "itemListElement": [
+                                {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Inicio",
+                                    "item": "https://soygarfield.com"
+                                },
+                                {
+                                    "@type": "ListItem",
+                                    "position": 2,
+                                    "name": "Expertos",
+                                    "item": "https://soygarfield.com/authors"
+                                }
+                            ]
+                        },
+                        {
+                            "@type": "CollectionPage",
+                            "name": "Equipo de Autores",
+                            "description": "Especialistas en SEO e Inteligencia Artificial"
+                        }
+                    ]
                 }}
             />
 

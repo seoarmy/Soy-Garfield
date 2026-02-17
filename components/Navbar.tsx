@@ -70,7 +70,7 @@ const Navbar: React.FC = () => {
                   Soy<span className="text-garfield-600">Garfield</span>
                 </span>
                 <span className="hidden sm:block text-[0.6rem] font-black uppercase tracking-[0.3em] text-slate-400 mt-1">
-                  Pietro Fiorillo
+                  Marketing & Growth
                 </span>
               </div>
             </Link>
@@ -92,8 +92,8 @@ const Navbar: React.FC = () => {
                   </Link>
                 ))}
                 <Link
-                  to="/author/pietro-fiorillo"
-                  className={`px-5 py-2.5 text-[0.7rem] font-black transition-all uppercase tracking-[0.2em] rounded-xl group/link ${location.pathname === '/author/pietro-fiorillo'
+                  to="/about"
+                  className={`px-5 py-2.5 text-[0.7rem] font-black transition-all uppercase tracking-[0.2em] rounded-xl group/link ${location.pathname === '/about'
                     ? 'text-garfield-600 bg-garfield-50'
                     : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
                     }`}
@@ -163,10 +163,10 @@ const Navbar: React.FC = () => {
                 </div>
                 <div className="min-w-0">
                   <div className="text-xl font-black text-slate-900 leading-tight">
-                    Pietro <span className="text-garfield-600">Garfield</span>
+                    Soy <span className="text-garfield-600">Garfield</span>
                   </div>
                   <div className="text-[0.6rem] font-black uppercase tracking-widest text-slate-400 mt-1 truncate">
-                    SEO & IA Architect
+                    Marketing & Growth
                   </div>
                 </div>
               </div>
@@ -206,7 +206,7 @@ const Navbar: React.FC = () => {
                 </Link>
               ))}
 
-              <Link to="/author/pietro-fiorillo" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+              <Link to="/about" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
                 <div className="flex items-center gap-4">
                   <div className="p-2.5 bg-white rounded-2xl shadow-sm text-slate-900 group-hover:text-garfield-600 transition-colors">
                     <User size={20} />

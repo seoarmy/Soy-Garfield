@@ -56,19 +56,40 @@ const Contact: React.FC = () => {
     <div className="min-h-screen bg-white">
       <SEO
         title="Contacto"
-        description="¿Tienes preguntas sobre SEO o IA? Ponte en contacto con Pietro Fiorillo para consultorías o colaboraciones."
+        description="¿Tienes preguntas sobre SEO o IA? Ponte en contacto con nosotros para consultorías o colaboraciones."
         schemaData={{
           "@context": "https://schema.org",
-          "@type": "ContactPage",
-          "name": "Contacto - Soy Garfield",
-          "description": "¿Tienes alguna pregunta sobre SEO, una propuesta de colaboración o simplemente quieres saludar?",
-          "url": "https://soygarfield.com/contact",
-          "mainEntity": {
-            "@type": "Person",
-            "name": "Pietro Fiorillo",
-            "email": "hello@soygarfield.com",
-            "jobTitle": "SEO & IA Architect"
-          }
+          "@graph": [
+            {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Inicio",
+                  "item": "https://soygarfield.com"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Contacto",
+                  "item": "https://soygarfield.com/contact"
+                }
+              ]
+            },
+            {
+              "@type": "ContactPage",
+              "name": "Contacto - Soy Garfield",
+              "description": "¿Tienes alguna pregunta sobre SEO, una propuesta de colaboración o simplemente quieres saludar?",
+              "url": "https://soygarfield.com/contact",
+              "mainEntity": {
+                "@type": "Organization",
+                "name": "Soy Garfield",
+                "email": "marketing@manyadigital.com.ar",
+                "jobTitle": "Marketing Agency"
+              }
+            }
+          ]
         }}
       />
       {/* Header Section */}
@@ -106,8 +127,8 @@ const Contact: React.FC = () => {
                 <div>
                   <h3 className="font-bold text-slate-900 mb-1">Escríbenos</h3>
                   <p className="text-slate-500 text-sm mb-2">Para consultas generales y propuestas editoriales.</p>
-                  <a href="mailto:hello@soygarfield.com" className="text-garfield-600 font-semibold hover:text-garfield-700">
-                    hello@soygarfield.com
+                  <a href="mailto:marketing@manyadigital.com.ar" className="text-garfield-600 font-semibold hover:text-garfield-700">
+                    marketing@manyadigital.com.ar
                   </a>
                 </div>
               </div>
@@ -120,8 +141,8 @@ const Contact: React.FC = () => {
                   <h3 className="font-bold text-slate-900 mb-1">Redes Sociales</h3>
                   <p className="text-slate-500 text-sm mb-2">Síguenos para actualizaciones en tiempo real.</p>
                   <div className="flex gap-4">
-                    <a href="#" className="text-slate-400 hover:text-slate-900 transition-colors font-medium text-sm">Twitter</a>
-                    <a href="#" className="text-slate-400 hover:text-slate-900 transition-colors font-medium text-sm">LinkedIn</a>
+                    <a href="https://www.instagram.com/theseoarmy/" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-slate-900 transition-colors font-medium text-sm">Instagram</a>
+                    <a href="https://es.linkedin.com/in/pietrofiorillo" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-slate-900 transition-colors font-medium text-sm">LinkedIn</a>
                   </div>
                 </div>
               </div>
@@ -133,8 +154,8 @@ const Contact: React.FC = () => {
                 <div>
                   <h3 className="font-bold text-slate-900 mb-1">Ubicación</h3>
                   <p className="text-slate-500 text-sm">
-                    Nómada digital con base global.<br />
-                    Actualmente en: <span className="font-medium text-slate-900">Tokio, Japón</span>
+                    Agencia digital con base en España.<br />
+                    Actualmente en: <span className="font-medium text-slate-900">Madrid, España</span>
                   </p>
                 </div>
               </div>

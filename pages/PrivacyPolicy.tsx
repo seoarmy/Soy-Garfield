@@ -1,8 +1,34 @@
-import React from 'react';
+import SEO from '../components/SEO';
 
 const PrivacyPolicy: React.FC = () => {
   return (
     <div className="min-h-screen bg-white py-16 lg:py-24">
+      <SEO
+        title="Política de Privacidad"
+        description="Conoce cómo protegemos tus datos personales en Soy Garfield."
+        schemaData={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "BreadcrumbList",
+              "itemListElement": [
+                {
+                  "@type": "ListItem",
+                  "position": 1,
+                  "name": "Inicio",
+                  "item": "https://soygarfield.com"
+                },
+                {
+                  "@type": "ListItem",
+                  "position": 2,
+                  "name": "Privacidad",
+                  "item": "https://soygarfield.com/privacy"
+                }
+              ]
+            }
+          ]
+        }}
+      />
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl mb-4">Política de Privacidad</h1>
@@ -56,7 +82,7 @@ const PrivacyPolicy: React.FC = () => {
 
           <h2>6. Contáctenos</h2>
           <p>
-            Si tiene alguna pregunta sobre esta política de privacidad o nuestras prácticas de privacidad, contáctenos en <a href="mailto:hello@soygarfield.com">hello@soygarfield.com</a>.
+            Si tiene alguna pregunta sobre esta política de privacidad o nuestras prácticas de privacidad, contáctenos en <a href="mailto:marketing@manyadigital.com.ar">marketing@manyadigital.com.ar</a>.
           </p>
         </div>
       </div>

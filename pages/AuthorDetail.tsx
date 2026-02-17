@@ -73,20 +73,47 @@ const AuthorDetail: React.FC = () => {
                 description={author.seoDescription || author.description}
                 schemaData={{
                     "@context": "https://schema.org",
-                    "@type": "ProfilePage",
-                    "mainEntity": {
-                        "@type": "Person",
-                        "name": author.name,
-                        "jobTitle": author.role,
-                        "description": author.description || '',
-                        "url": window.location.href,
-                        "image": author.image || '',
-                        "sameAs": [
-                            author.socials?.linkedin,
-                            author.socials?.twitter,
-                            author.socials?.instagram
-                        ].filter(Boolean)
-                    }
+                    "@graph": [
+                        {
+                            "@type": "BreadcrumbList",
+                            "itemListElement": [
+                                {
+                                    "@type": "ListItem",
+                                    "position": 1,
+                                    "name": "Inicio",
+                                    "item": "https://soygarfield.com"
+                                },
+                                {
+                                    "@type": "ListItem",
+                                    "position": 2,
+                                    "name": "Expertos",
+                                    "item": "https://soygarfield.com/authors"
+                                },
+                                {
+                                    "@type": "ListItem",
+                                    "position": 3,
+                                    "name": author.name,
+                                    "item": `https://soygarfield.com/author/${author.slug}`
+                                }
+                            ]
+                        },
+                        {
+                            "@type": "ProfilePage",
+                            "mainEntity": {
+                                "@type": "Person",
+                                "name": author.name,
+                                "jobTitle": author.role,
+                                "description": author.description || '',
+                                "url": window.location.href,
+                                "image": author.image || '',
+                                "sameAs": [
+                                    author.socials?.linkedin,
+                                    author.socials?.twitter,
+                                    author.socials?.instagram
+                                ].filter(Boolean)
+                            }
+                        }
+                    ]
                 }}
             />
 

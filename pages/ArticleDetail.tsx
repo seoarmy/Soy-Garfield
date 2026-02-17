@@ -3,10 +3,57 @@ import { useParams, Link } from 'react-router-dom';
 import { Article } from '../types';
 import ArticleCard from '../components/ArticleCard';
 import { getArticleBySlug, getArticles } from '../services/articleService';
-import { Clock, Calendar, Linkedin, Twitter, Facebook, Bookmark, ArrowRight, List, Download, CheckCircle2, ChevronRight, MessageSquare, Quote, Loader2, Tag } from 'lucide-react';
+import { Clock, Calendar, Linkedin, Twitter, Facebook, Bookmark, ArrowRight, List, Download, CheckCircle2, ChevronRight, MessageSquare, Quote, Loader2, Tag, Copy, Check, Terminal } from 'lucide-react';
 import pietroPhoto from '../assets/pietro.png';
 import SEO from '../components/SEO';
 import { PortableText } from '@portabletext/react';
+
+const CodeBlock = ({ value }: { value: any }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(value.code);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="my-10 rounded-[1.5rem] overflow-hidden bg-[#0d1117] shadow-2xl border border-slate-800/50 group transition-all duration-300 hover:border-garfield-500/30">
+      {/* Mac-style Window Header */}
+      <div className="flex items-center justify-between px-5 py-3 bg-[#161b22] border-b border-slate-800/50">
+        <div className="flex items-center gap-2">
+          <div className="h-3 w-3 rounded-full bg-[#ff5f56] border border-[#ff5f56]/20 shadow-[0_0_10px_rgba(255,95,86,0.1)]"></div>
+          <div className="h-3 w-3 rounded-full bg-[#ffbd2e] border border-[#ffbd2e]/20"></div>
+          <div className="h-3 w-3 rounded-full bg-[#27c93f] border border-[#27c93f]/20"></div>
+        </div>
+        <div className="flex items-center gap-2 text-[0.6rem] font-black text-garfield-500 uppercase tracking-[0.2em]">
+          <Terminal size={12} strokeWidth={2.5} />
+          {value.language || 'Code'}
+        </div>
+        <div className="w-14"></div> {/* Spacer for balance */}
+      </div>
+
+      {/* Code Area */}
+      <div className="relative">
+        <button
+          onClick={handleCopy}
+          className="absolute top-4 right-4 p-2.5 rounded-xl bg-white/5 hover:bg-garfield-500 hover:text-white text-slate-400 transition-all duration-300 opacity-0 group-hover:opacity-100 focus:opacity-100 shadow-xl border border-white/5"
+          title="Copiar código"
+        >
+          {copied ? <Check size={16} strokeWidth={2.5} className="text-white" /> : <Copy size={16} strokeWidth={2} />}
+        </button>
+        <div className="p-6 md:p-8 overflow-x-auto">
+          <pre className="font-mono text-sm md:text-base leading-relaxed text-slate-300 selection:bg-garfield-500/30">
+            <code>{value.code}</code>
+          </pre>
+        </div>
+
+        {/* Bottom accent glow */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-garfield-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+      </div>
+    </div>
+  );
+};
 
 const portableTextComponents = {
   block: {
@@ -55,11 +102,26 @@ const portableTextComponents = {
         ))}
       </div>
     ),
-    codeBlock: ({ value }: any) => (
-      <div className="my-8 bg-slate-900 rounded-3xl p-8 font-mono text-sm text-garfield-400 overflow-x-auto shadow-2xl">
-        <pre><code>{value.code}</code></pre>
-      </div>
-    )
+    codeBlock: ({ value }: any) => <CodeBlock value={value} />
+  },
+  list: {
+    bullet: ({ children }: any) => <ul className="space-y-4 my-8 pl-2">{children}</ul>,
+    number: ({ children }: any) => <ol className="space-y-4 my-8 pl-2 start-1" style={{ counterReset: 'item' }}>{children}</ol>,
+  },
+  listItem: {
+    bullet: ({ children }: any) => (
+      <li className="flex gap-4 items-start group">
+        <div className="mt-2 h-2 w-2 rounded-full bg-garfield-500 shrink-0 shadow-[0_0_10px_rgba(249,115,22,0.6)] group-hover:scale-125 transition-transform"></div>
+        <span className="text-xl text-slate-600 font-medium leading-relaxed">{children}</span>
+      </li>
+    ),
+    number: ({ children }: any) => (
+      <li className="flex gap-5 items-start group relative mb-4">
+        <div className="flex items-center justify-center h-8 w-8 rounded-xl bg-slate-50 text-garfield-600 font-black text-xs shrink-0 border border-slate-100 shadow-sm mt-0.5 group-hover:bg-garfield-500 group-hover:text-white transition-all before:content-[counter(item)] before:counter-increment-item" style={{ counterIncrement: 'item' }}>
+        </div>
+        <span className="text-xl text-slate-600 font-medium leading-relaxed">{children}</span>
+      </li>
+    ),
   }
 };
 
@@ -166,7 +228,7 @@ const ArticleDetail: React.FC = () => {
 
   const articleSchema = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
+    "@type": "Article",
     "headline": articleData.seoTitle || articleData.title,
     "image": articleData.imageUrl,
     "author": {
@@ -176,7 +238,7 @@ const ArticleDetail: React.FC = () => {
     },
     "publisher": {
       "@type": "Organization",
-      "name": "Soy Garfield",
+      "name": "Pietro Fiorillo",
       "logo": {
         "@type": "ImageObject",
         "url": `${baseUrl}/assets/pietro.png`
@@ -203,6 +265,17 @@ const ArticleDetail: React.FC = () => {
     const url = encodeURIComponent(window.location.href);
     const text = encodeURIComponent(articleData.title);
     window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+  };
+
+  const shareOnWhatsApp = () => {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent(articleData.title);
+    window.open(`https://wa.me/?text=${text}%20${url}`, '_blank');
+  };
+
+  const shareOnFacebook = () => {
+    const url = encodeURIComponent(window.location.href);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
   };
 
   return (
@@ -278,16 +351,35 @@ const ArticleDetail: React.FC = () => {
                   </div>
                 </Link>
 
-                <div className="flex items-center gap-2">
-                  {articleData.authorTwitter && (
-                    <a href={articleData.authorTwitter} target="_blank" rel="noopener noreferrer" className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Twitter size={18} /></a>
-                  )}
-                  {articleData.authorLinkedIn && (
-                    <a href={articleData.authorLinkedIn} target="_blank" rel="noopener noreferrer" className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Linkedin size={18} /></a>
-                  )}
-                  <button className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-900 rounded-xl transition-all border border-slate-100"><Facebook size={18} /></button>
-                  <div className="h-6 w-px bg-slate-100 mx-2"></div>
-                  <button className="h-10 w-10 flex items-center justify-center text-slate-400 hover:text-garfield-600 hover:bg-garfield-50 rounded-xl transition-all border border-slate-100"><Bookmark size={18} /></button>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={shareOnLinkedIn}
+                    className="group relative h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 transition-all duration-300 hover:bg-[#0077b5] hover:text-white hover:scale-110 hover:shadow-lg hover:shadow-[#0077b5]/30 active:scale-95"
+                    aria-label="Compartir en LinkedIn"
+                    title="Compartir en LinkedIn"
+                  >
+                    <Linkedin size={20} strokeWidth={1.5} className="group-hover:stroke-[2px]" />
+                  </button>
+
+                  <button
+                    onClick={shareOnFacebook}
+                    className="group relative h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 transition-all duration-300 hover:bg-[#1877F2] hover:text-white hover:scale-110 hover:shadow-lg hover:shadow-[#1877F2]/30 active:scale-95"
+                    aria-label="Compartir en Facebook"
+                    title="Compartir en Facebook"
+                  >
+                    <Facebook size={20} strokeWidth={1.5} className="group-hover:stroke-[2px]" />
+                  </button>
+
+                  <div className="h-8 w-px bg-slate-100 mx-2"></div>
+
+                  <button
+                    onClick={shareOnWhatsApp}
+                    className="group relative h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 transition-all duration-300 hover:bg-[#25D366] hover:text-white hover:scale-110 hover:shadow-lg hover:shadow-[#25D366]/30 active:scale-95"
+                    aria-label="Compartir en WhatsApp"
+                    title="Compartir en WhatsApp"
+                  >
+                    <MessageSquare size={20} strokeWidth={1.5} className="group-hover:stroke-[2px]" />
+                  </button>
                 </div>
               </div>
             </header>
