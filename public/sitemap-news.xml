@@ -1,4 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+  <url>
+    <loc>https://soygarfield.com/article/trafico-ia-convierte-mejor-que-paid-search-adobe-2026</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Soy Garfield</news:name>
+        <news:language>es</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-21T00:00:00.000Z</news:publication_date>
+      <news:title>El tráfico de IA ya convierte mejor que el paid search. Los datos de Adobe lo demuestran</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/article/google-core-update-marzo-2026-mas-volatil-diciembre</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Soy Garfield</news:name>
+        <news:language>es</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-21T00:00:00.000Z</news:publication_date>
+      <news:title>El core update de Google de marzo 2026 fue más disruptivo que el de diciembre. Esto es lo que cambió</news:title>
+    </news:news>
+  </url>
 </urlset>

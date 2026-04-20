@@ -19,10 +19,15 @@ async function generateSitemaps() {
     console.log('Generando sitemaps...');
 
     try {
-        const articles = await client.fetch(
-            `*[_type == "article"] | order(_updatedAt desc) { "slug": slug.current, "date": date, "updatedAt": _updatedAt, title, category }`
-        );
+        const [articles, tagResults] = await Promise.all([
+            client.fetch(
+                `*[_type == "article"] | order(_updatedAt desc) { "slug": slug.current, "date": date, "updatedAt": _updatedAt, title, category, tags }`
+            ),
+            client.fetch(`*[_type == "article" && defined(tags)] { tags }.tags`),
+        ]);
         console.log(`${articles.length} artículos encontrados.`);
+
+        const allTags = [...new Set(tagResults.flat())];
 
         const staticRoutes = [
             { path: '', freq: 'daily', priority: '1.0' },
@@ -31,6 +36,7 @@ async function generateSitemaps() {
             { path: '/authors', freq: 'weekly', priority: '0.6' },
             { path: '/category/seo', freq: 'daily', priority: '0.9' },
             { path: '/category/ia', freq: 'daily', priority: '0.9' },
+            { path: '/sobre/politica-editorial', freq: 'monthly', priority: '0.5' },
         ];
 
         const today = new Date().toISOString().split('T')[0];
@@ -55,6 +61,16 @@ async function generateSitemaps() {
             mainXml += `    <lastmod>${lastMod}</lastmod>\n`;
             mainXml += `    <changefreq>monthly</changefreq>\n`;
             mainXml += `    <priority>0.9</priority>\n`;
+            mainXml += `  </url>\n`;
+        });
+
+        allTags.forEach(tag => {
+            const tagSlug = encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-'));
+            mainXml += `  <url>\n`;
+            mainXml += `    <loc>${baseUrl}/tag/${tagSlug}</loc>\n`;
+            mainXml += `    <lastmod>${today}</lastmod>\n`;
+            mainXml += `    <changefreq>weekly</changefreq>\n`;
+            mainXml += `    <priority>0.6</priority>\n`;
             mainXml += `  </url>\n`;
         });
 

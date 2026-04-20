@@ -75,3 +75,49 @@ export const getArticleBySlug = async (slug: string): Promise<Article | null> =>
     return null;
   }
 };
+
+export const getArticlesByTag = async (tag: string): Promise<Article[]> => {
+  const query = `*[_type == "article" && $tag in tags] | order(date desc) {
+    "id": _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    "author": author->name,
+    "authorSlug": author->slug.current,
+    "authorRole": author->role,
+    "authorImage": author->image.asset->url,
+    "authorBio": author->description,
+    date,
+    "_updatedAt": _updatedAt,
+    category,
+    readTime,
+    tags,
+    "imageUrl": mainImage.asset->url,
+    isFeatured,
+    content
+  }`;
+
+  try {
+    const results = await client.fetch(query, { tag } as Record<string, unknown>);
+    return results.map((a: Article & { imageUrl?: string; authorImage?: string }) => ({
+      ...a,
+      imageUrl: discoverImageUrl(a.imageUrl),
+      authorImage: squareThumbUrl(a.authorImage),
+    }));
+  } catch (err) {
+    console.error('Sanity Fetch Error (getArticlesByTag):', err);
+    return [];
+  }
+};
+
+export const getAllTags = async (): Promise<string[]> => {
+  try {
+    const tags: string[][] = await client.fetch(
+      `*[_type == "article" && defined(tags)] { tags }.tags`,
+    );
+    return [...new Set(tags.flat())].sort();
+  } catch (err) {
+    console.error('Sanity Fetch Error (getAllTags):', err);
+    return [];
+  }
+};

@@ -185,10 +185,10 @@ export default function ArticleClient({ article, relatedArticles, sidebarArticle
               {article.tags && article.tags.length > 0 && (
                 <div className="flex flex-wrap gap-2 mb-8">
                   {article.tags.map((tag) => (
-                    <span key={tag} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 text-[0.6rem] font-black text-slate-500 uppercase tracking-widest border border-slate-200">
+                    <Link key={tag} href={`/tag/${encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-'))}`} className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 text-[0.6rem] font-black text-slate-500 uppercase tracking-widest border border-slate-200 hover:border-garfield-400 hover:text-garfield-600 transition-colors">
                       <Tag size={12} />
                       {tag}
-                    </span>
+                    </Link>
                   ))}
                 </div>
               )}
