@@ -39,6 +39,7 @@
     "node_modules",
     "functions",
     "_pages",
-    "data"
+    "data",
+    "studio"
   ]
 }
