@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { WriterForm } from '../types';
 import { Send, CheckCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-
 import SEO from '../components/SEO';
+
+const WRITE_ENDPOINT = '/api/write';
 
 const Write: React.FC = () => {
   const navigate = useNavigate();
@@ -22,12 +23,22 @@ const Write: React.FC = () => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate submission
-    setTimeout(() => {
-      setIsSubmitted(true);
-    }, 1000);
+    try {
+      const res = await fetch(WRITE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (res.ok) {
+        setIsSubmitted(true);
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch {
+      alert(`Error al enviar. Por favor escríbenos a marketing@manyadigital.com.ar`);
+    }
   };
 
   if (isSubmitted) {

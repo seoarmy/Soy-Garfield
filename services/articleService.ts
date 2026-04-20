@@ -1,4 +1,4 @@
-import { client } from './sanity';
+import { client, discoverImageUrl, squareThumbUrl } from './sanity';
 import { Article } from '../types';
 
 export const getArticles = async (): Promise<Article[]> => {
@@ -13,6 +13,7 @@ export const getArticles = async (): Promise<Article[]> => {
     "authorImage": author->image.asset->url,
     "authorBio": author->description,
     date,
+    "_updatedAt": _updatedAt,
     category,
     readTime,
     tags,
@@ -23,11 +24,11 @@ export const getArticles = async (): Promise<Article[]> => {
 
   try {
     const results = await client.fetch(query);
-    console.log('Sanity Fetch (getArticles) result count:', results.length);
-    if (results.length > 0) {
-      console.log('Latest Article:', results[0].title);
-    }
-    return results;
+    return results.map((a: Article & { imageUrl?: string; authorImage?: string }) => ({
+      ...a,
+      imageUrl: discoverImageUrl(a.imageUrl),
+      authorImage: squareThumbUrl(a.authorImage),
+    }));
   } catch (err) {
     console.error('Sanity Fetch Error (getArticles):', err);
     return [];
@@ -48,10 +49,13 @@ export const getArticleBySlug = async (slug: string): Promise<Article | null> =>
     "authorLinkedIn": author->socials.linkedin,
     "authorTwitter": author->socials.twitter,
     date,
+    "updatedAt": _updatedAt,
     category,
     readTime,
     tags,
     "imageUrl": mainImage.asset->url,
+    "imageWidth": mainImage.asset->metadata.dimensions.width,
+    "imageHeight": mainImage.asset->metadata.dimensions.height,
     "seoTitle": coalesce(seoTitle, title),
     "seoDescription": coalesce(seoDescription, excerpt),
     isFeatured,
@@ -60,8 +64,12 @@ export const getArticleBySlug = async (slug: string): Promise<Article | null> =>
 
   try {
     const result = await client.fetch(query, { slug });
-    console.log('Sanity Fetch (getArticleBySlug) for slug:', slug, result ? 'Found' : 'Not Found');
-    return result;
+    if (!result) return null;
+    return {
+      ...result,
+      imageUrl: discoverImageUrl(result.imageUrl),
+      authorImage: squareThumbUrl(result.authorImage),
+    };
   } catch (err) {
     console.error('Sanity Fetch Error (getArticleBySlug):', err);
     return null;

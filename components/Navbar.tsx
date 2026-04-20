@@ -1,12 +1,16 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import {
   Menu, X, Search, Zap, Home, User,
   MessageSquare, ChevronRight, Sparkles,
   BookOpen, Linkedin, Twitter, ArrowRight
 } from 'lucide-react';
 import { NavItem } from '../types';
-import pietroLogo from '../assets/pietro.png';
+import pietroLogo from '../assets/pietro.webp';
+import Image from 'next/image';
 
 const navItems: NavItem[] = [
   { label: 'SEO', path: '/category/seo' },
@@ -17,18 +21,14 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
 
-  // Handle scroll effect
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Prevent scroll when mobile menu is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -41,10 +41,9 @@ const Navbar: React.FC = () => {
     }
   }, [isOpen]);
 
-  // Close menu on route change
   useEffect(() => {
     setIsOpen(false);
-  }, [location.pathname]);
+  }, [pathname]);
 
   return (
     <>
@@ -52,18 +51,13 @@ const Navbar: React.FC = () => {
         className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-500 ${scrolled
           ? 'bg-white/90 backdrop-blur-xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] py-3 border-b border-slate-100'
           : 'bg-white py-5 border-b border-white'
-          }`}
+        }`}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            {/* Logo Section */}
-            <Link to="/" className="flex items-center gap-3 group relative z-[110]">
+            <Link href="/" className="flex items-center gap-3 group relative z-[110]">
               <div className="relative flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-2xl overflow-hidden bg-slate-100 transition-all duration-500 group-hover:rotate-[5deg] group-hover:scale-110 shadow-lg border-2 border-white ring-1 ring-slate-100">
-                <img
-                  src={pietroLogo}
-                  alt="Pietro Fiorillo"
-                  className="h-full w-full object-cover"
-                />
+                <Image src={pietroLogo} alt="Pietro Fiorillo" fill className="object-cover" sizes="48px" />
               </div>
               <div className="flex flex-col">
                 <span className="text-lg sm:text-xl font-black tracking-tight text-slate-900 leading-none">
@@ -75,28 +69,26 @@ const Navbar: React.FC = () => {
               </div>
             </Link>
 
-            {/* Desktop Actions bar toggle the menu */}
             <div className="flex items-center gap-3 sm:gap-6">
-              {/* Desktop Nav */}
               <nav className="hidden lg:flex items-center gap-2">
                 {navItems.map((item) => (
                   <Link
                     key={item.label}
-                    to={item.path}
-                    className={`px-5 py-2.5 text-[0.7rem] font-black transition-all uppercase tracking-[0.2em] rounded-xl relative overflow-hidden group/link ${location.pathname === item.path
+                    href={item.path}
+                    className={`px-5 py-2.5 text-[0.7rem] font-black transition-all uppercase tracking-[0.2em] rounded-xl relative overflow-hidden group/link ${pathname === item.path
                       ? 'text-garfield-600 bg-garfield-50'
                       : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
-                      }`}
+                    }`}
                   >
                     <span className="relative z-10">{item.label}</span>
                   </Link>
                 ))}
                 <Link
-                  to="/about"
-                  className={`px-5 py-2.5 text-[0.7rem] font-black transition-all uppercase tracking-[0.2em] rounded-xl group/link ${location.pathname === '/about'
+                  href="/author/pietro-fiorillo"
+                  className={`px-5 py-2.5 text-[0.7rem] font-black transition-all uppercase tracking-[0.2em] rounded-xl group/link ${pathname === '/author/pietro-fiorillo'
                     ? 'text-garfield-600 bg-garfield-50'
                     : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
-                    }`}
+                  }`}
                 >
                   <span className="relative z-10 flex items-center gap-2">
                     <User size={14} className="opacity-50" />
@@ -110,26 +102,25 @@ const Navbar: React.FC = () => {
                   type="text"
                   placeholder="Buscar..."
                   className={`bg-slate-50 border border-slate-100 rounded-2xl px-5 py-2.5 text-xs font-medium focus:ring-2 focus:ring-garfield-500 focus:bg-white outline-none transition-all duration-500 ${isSearchOpen ? 'w-64 opacity-100' : 'w-0 opacity-0 pointer-events-none'
-                    }`}
+                  }`}
                 />
                 <button
                   onClick={() => setIsSearchOpen(!isSearchOpen)}
                   className={`p-2.5 text-slate-400 hover:text-garfield-600 hover:bg-garfield-50 rounded-xl transition-all ${isSearchOpen ? 'bg-garfield-50 text-garfield-600 ml-2' : ''
-                    }`}
+                  }`}
                 >
                   <Search size={20} />
                 </button>
               </div>
 
               <Link
-                to="/contact"
+                href="/contact"
                 className="hidden sm:flex items-center gap-2 rounded-2xl bg-slate-900 px-8 py-3.5 text-[0.65rem] font-black uppercase tracking-[0.2em] text-white hover:bg-garfield-600 transition-all shadow-xl shadow-slate-900/10 active:scale-95 group/btn"
               >
                 Let's Talk
                 <Sparkles size={14} className="group-hover/btn:animate-sparkle" />
               </Link>
 
-              {/* Mobile Toggle Button */}
               <button
                 onClick={() => setIsOpen(!isOpen)}
                 className="lg:hidden relative z-[150] p-3 rounded-2xl bg-slate-900 text-white shadow-lg active:scale-90 transition-all"
@@ -147,19 +138,17 @@ const Navbar: React.FC = () => {
         className={`fixed inset-0 z-[140] bg-white lg:hidden transition-all duration-500 flex flex-col ${isOpen
           ? 'opacity-100 pointer-events-auto visible'
           : 'opacity-0 pointer-events-none invisible'
-          }`}
+        }`}
       >
-        {/* Safe Area / Top Spacer */}
         <div className="h-24 sm:h-28 flex-shrink-0"></div>
 
         <div className="flex-grow overflow-y-auto px-6 pb-24">
           <div className="mx-auto max-w-lg">
-            {/* Author Card */}
             <div className="bg-slate-50 rounded-[2.5rem] p-6 mb-8 border border-slate-100 relative overflow-hidden shadow-sm">
               <div className="absolute top-0 right-0 w-32 h-32 bg-garfield-500/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
               <div className="flex items-center gap-5 relative z-10">
-                <div className="h-16 w-16 overflow-hidden rounded-3xl border-4 border-white shadow-xl flex-shrink-0">
-                  <img src={pietroLogo} alt="Pietro" className="h-full w-full object-cover" />
+                <div className="h-16 w-16 overflow-hidden rounded-3xl border-4 border-white shadow-xl flex-shrink-0 relative">
+                  <Image src={pietroLogo} alt="Pietro" fill className="object-cover" sizes="64px" />
                 </div>
                 <div className="min-w-0">
                   <div className="text-xl font-black text-slate-900 leading-tight">
@@ -172,7 +161,6 @@ const Navbar: React.FC = () => {
               </div>
             </div>
 
-            {/* Mobile Search Input */}
             <div className="relative mb-8">
               <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
               <input
@@ -182,9 +170,8 @@ const Navbar: React.FC = () => {
               />
             </div>
 
-            {/* Navigation Sections */}
             <div className="grid grid-cols-1 gap-3 mb-10">
-              <Link to="/" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+              <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
                 <div className="flex items-center gap-4">
                   <div className="p-2.5 bg-white rounded-2xl shadow-sm text-slate-900 group-hover:text-garfield-600 transition-colors">
                     <Home size={20} />
@@ -195,7 +182,7 @@ const Navbar: React.FC = () => {
               </Link>
 
               {navItems.map((item) => (
-                <Link key={item.label} to={item.path} onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+                <Link key={item.label} href={item.path} onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
                   <div className="flex items-center gap-4">
                     <div className="p-2.5 bg-white rounded-2xl shadow-sm text-slate-900 group-hover:text-garfield-600 transition-colors">
                       {item.label === 'SEO' ? <Sparkles size={20} /> : <Zap size={20} />}
@@ -206,7 +193,7 @@ const Navbar: React.FC = () => {
                 </Link>
               ))}
 
-              <Link to="/about" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
+              <Link href="/author/pietro-fiorillo" onClick={() => setIsOpen(false)} className="flex items-center justify-between p-5 rounded-3xl bg-slate-50 border border-transparent hover:border-slate-100 transition-all group">
                 <div className="flex items-center gap-4">
                   <div className="p-2.5 bg-white rounded-2xl shadow-sm text-slate-900 group-hover:text-garfield-600 transition-colors">
                     <User size={20} />
@@ -217,24 +204,23 @@ const Navbar: React.FC = () => {
               </Link>
             </div>
 
-            {/* Social and Contact Info */}
             <div className="mt-auto border-t border-slate-100 pt-8">
               <div className="flex items-center justify-between mb-8">
                 <div className="flex gap-3">
-                  <a href="#" className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all shadow-sm">
+                  <a href="https://www.linkedin.com/in/pietrofiorillo/" target="_blank" rel="noopener noreferrer" className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all shadow-sm">
                     <Linkedin size={20} />
                   </a>
-                  <a href="#" className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all shadow-sm">
+                  <a href="https://twitter.com/pietrofiorillo" target="_blank" rel="noopener noreferrer" className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:bg-slate-900 hover:text-white transition-all shadow-sm">
                     <Twitter size={20} />
                   </a>
                 </div>
-                <Link to="/contact" onClick={() => setIsOpen(false)} className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-garfield-600 flex items-center gap-2">
+                <Link href="/contact" onClick={() => setIsOpen(false)} className="text-[0.65rem] font-black uppercase tracking-[0.2em] text-garfield-600 flex items-center gap-2">
                   Consultoría <ArrowRight size={14} />
                 </Link>
               </div>
 
               <Link
-                to="/contact"
+                href="/contact"
                 onClick={() => setIsOpen(false)}
                 className="flex items-center justify-center gap-3 w-full bg-slate-900 py-5 rounded-3xl text-white font-black uppercase tracking-[0.2em] text-[0.7rem] shadow-2xl shadow-slate-900/10 active:scale-95 transition-all"
               >
@@ -246,24 +232,24 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* FLOATING MOBILE NAV BAR - Hidden when menu is open */}
+      {/* FLOATING MOBILE NAV BAR */}
       <nav className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[110] w-[90%] max-w-md h-16 bg-slate-900/90 backdrop-blur-2xl rounded-[2rem] lg:hidden flex items-center justify-around px-2 shadow-[0_20px_50px_rgba(0,0,0,0.3)] border border-white/10 transition-all duration-300 ${isOpen ? 'translate-y-32 opacity-0' : 'translate-y-0 opacity-100'}`}>
-        <Link to="/" className={`flex flex-col items-center justify-center gap-1 transition-all ${location.pathname === '/' ? 'text-garfield-400' : 'text-slate-400 active:scale-90 hover:text-white'}`}>
-          <Home size={20} strokeWidth={location.pathname === '/' ? 3 : 2} />
+        <Link href="/" className={`flex flex-col items-center justify-center gap-1 transition-all ${pathname === '/' ? 'text-garfield-400' : 'text-slate-400 active:scale-90 hover:text-white'}`}>
+          <Home size={20} strokeWidth={pathname === '/' ? 3 : 2} />
           <span className="text-[0.55rem] font-black uppercase tracking-widest">Inicio</span>
         </Link>
-        <Link to="/category/seo" className={`flex flex-col items-center justify-center gap-1 transition-all ${location.pathname === '/category/seo' ? 'text-garfield-400' : 'text-slate-400 active:scale-90 hover:text-white'}`}>
-          <Sparkles size={20} strokeWidth={location.pathname === '/category/seo' ? 3 : 2} />
+        <Link href="/category/seo" className={`flex flex-col items-center justify-center gap-1 transition-all ${pathname === '/category/seo' ? 'text-garfield-400' : 'text-slate-400 active:scale-90 hover:text-white'}`}>
+          <Sparkles size={20} strokeWidth={pathname === '/category/seo' ? 3 : 2} />
           <span className="text-[0.55rem] font-black uppercase tracking-widest">SEO</span>
         </Link>
         <Link
-          to="/write"
+          href="/write"
           className="relative -top-8 flex h-16 w-16 items-center justify-center rounded-[2rem] bg-garfield-500 text-white shadow-2xl shadow-garfield-500/40 transition-all hover:scale-110 active:scale-90"
         >
           <Zap size={28} fill="currentColor" />
         </Link>
-        <Link to="/category/ia" className={`flex flex-col items-center justify-center gap-1 transition-all ${location.pathname === '/category/ia' ? 'text-garfield-400' : 'text-slate-400 active:scale-90 hover:text-white'}`}>
-          <Zap size={20} strokeWidth={location.pathname === '/category/ia' ? 3 : 2} />
+        <Link href="/category/ia" className={`flex flex-col items-center justify-center gap-1 transition-all ${pathname === '/category/ia' ? 'text-garfield-400' : 'text-slate-400 active:scale-90 hover:text-white'}`}>
+          <Zap size={20} strokeWidth={pathname === '/category/ia' ? 3 : 2} />
           <span className="text-[0.55rem] font-black uppercase tracking-widest">IA</span>
         </Link>
         <button
@@ -275,7 +261,6 @@ const Navbar: React.FC = () => {
         </button>
       </nav>
 
-      {/* Spacer */}
       <div className="h-[80px] sm:h-[100px]"></div>
     </>
   );

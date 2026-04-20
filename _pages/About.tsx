@@ -100,13 +100,23 @@ const About: React.FC = () => {
                 "name": author.name,
                 "jobTitle": author.role,
                 "description": author.description || '',
-                "url": window.location.href,
+                "url": "https://soygarfield.com/about",
                 "image": author.image || '',
+                "inLanguage": "es",
+                "knowsAbout": [
+                  "Search Engine Optimization",
+                  "Generative Engine Optimization",
+                  "SEO Técnico",
+                  "SEO Local",
+                  "Inteligencia Artificial aplicada al Marketing"
+                ],
                 "sameAs": [
-                  author.socials?.linkedin,
+                  "https://www.linkedin.com/in/pietrofiorillo/",
+                  "https://www.instagram.com/theseoarmy/",
                   author.socials?.twitter,
-                  author.socials?.instagram
-                ].filter(Boolean)
+                  author.socials?.instagram,
+                  author.socials?.linkedin
+                ].filter((v, i, arr) => Boolean(v) && arr.indexOf(v) === i)
               }
             }
           ]

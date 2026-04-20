@@ -4,7 +4,7 @@ import { Article } from '../types';
 import ArticleCard from '../components/ArticleCard';
 import { getArticleBySlug, getArticles } from '../services/articleService';
 import { Clock, Calendar, Linkedin, Twitter, Facebook, Bookmark, ArrowRight, List, Download, CheckCircle2, ChevronRight, MessageSquare, Quote, Loader2, Tag, Copy, Check, Terminal } from 'lucide-react';
-import pietroPhoto from '../assets/pietro.png';
+import pietroPhoto from '../assets/pietro.webp';
 import SEO from '../components/SEO';
 import { PortableText } from '@portabletext/react';
 
@@ -145,12 +145,20 @@ const calculateReadTime = (content: any[]): string => {
   return `${minutes} min de lectura`;
 };
 
+const categorySlugMap: Record<string, string> = {
+  'SEO': 'seo',
+  'IA': 'ia',
+  'Social Media': 'social-media',
+  'Analítica': 'analitica',
+};
+
 const ArticleDetail: React.FC = () => {
-  const { id } = useParams(); // URL param is 'id' but it's the slug
+  const { slug: id } = useParams();
   const [articleData, setArticleData] = useState<Article | null>(null);
   const [relatedArticles, setRelatedArticles] = useState<Article[]>([]);
   const [sidebarArticles, setSidebarArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -174,6 +182,16 @@ const ArticleDetail: React.FC = () => {
     fetchArticle();
     window.scrollTo(0, 0);
   }, [id]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const el = document.documentElement;
+      const total = el.scrollHeight - el.clientHeight;
+      setScrollProgress(total > 0 ? (el.scrollTop / total) * 100 : 0);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   if (loading) {
     return (
@@ -201,60 +219,63 @@ const ArticleDetail: React.FC = () => {
   const displayReadTime = articleData.readTime || calculateReadTime(articleData.content as any[]);
   const authorLink = articleData.authorSlug ? `/author/${articleData.authorSlug}` : '/about';
 
-  const breadcrumbSchema = {
+  const combinedSchema = {
     "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
+    "@graph": [
       {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Inicio",
-        "item": baseUrl
+        "@type": ["NewsArticle", "Article"],
+        "headline": articleData.seoTitle || articleData.title,
+        "image": {
+          "@type": "ImageObject",
+          "url": articleData.imageUrl,
+          "width": 1200,
+          "height": 675
+        },
+        "author": {
+          "@type": "Person",
+          "name": articleData.author,
+          "url": `${baseUrl}${authorLink}`
+        },
+        "publisher": {
+          "@type": "Organization",
+          "@id": "https://soygarfield.com/#organization",
+          "name": "Soy Garfield",
+          "logo": {
+            "@type": "ImageObject",
+            "url": `${baseUrl}/SOY-garfiel-logo.png`,
+            "width": 600,
+            "height": 60
+          }
+        },
+        "datePublished": isoDate,
+        "dateModified": (articleData as any).updatedAt || isoDate,
+        "description": articleData.seoDescription || articleData.excerpt,
+        "isAccessibleForFree": "True",
+        "inLanguage": "es",
+        "speakable": {
+          "@type": "SpeakableSpecification",
+          "cssSelector": ["h1", "h2"]
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": `${baseUrl}/article/${articleData.slug}`
+        }
       },
       {
-        "@type": "ListItem",
-        "position": 2,
-        "name": articleData.category,
-        "item": `${baseUrl}/category/${articleData.category.toLowerCase()}`
-      },
-      {
-        "@type": "ListItem",
-        "position": 3,
-        "name": articleData.title,
-        "item": `${baseUrl}/article/${articleData.slug}`
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Inicio", "item": baseUrl },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": articleData.category,
+            "item": `${baseUrl}/category/${categorySlugMap[articleData.category] || articleData.category.toLowerCase()}`
+          },
+          { "@type": "ListItem", "position": 3, "name": articleData.title, "item": `${baseUrl}/article/${articleData.slug}` }
+        ]
       }
     ]
   };
-
-  const articleSchema = {
-    "@context": "https://schema.org",
-    "@type": "Article",
-    "headline": articleData.seoTitle || articleData.title,
-    "image": articleData.imageUrl,
-    "author": {
-      "@type": "Person",
-      "name": articleData.author,
-      "url": `${baseUrl}${authorLink}`
-    },
-    "publisher": {
-      "@type": "Organization",
-      "name": "Pietro Fiorillo",
-      "logo": {
-        "@type": "ImageObject",
-        "url": `${baseUrl}/assets/pietro.png`
-      }
-    },
-    "datePublished": isoDate,
-    "dateModified": isoDate,
-    "description": articleData.seoDescription || articleData.excerpt,
-    "isAccessibleForFree": "True",
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": `${baseUrl}/article/${articleData.slug}`
-    }
-  };
-
-  const combinedSchema = [articleSchema, breadcrumbSchema];
 
   const shareOnLinkedIn = () => {
     const url = encodeURIComponent(window.location.href);
@@ -287,12 +308,13 @@ const ArticleDetail: React.FC = () => {
         article={true}
         author={articleData.author}
         date={isoDate}
-        modifiedDate={isoDate}
+        modifiedDate={(articleData as any).updatedAt || isoDate}
         category={articleData.category}
+        keywords={articleData.tags?.join(', ')}
         schemaData={combinedSchema}
       />
       <div className="fixed top-0 left-0 w-full h-1.5 z-[150] bg-slate-100">
-        <div className="h-full bg-garfield-500 w-1/3 transition-all duration-300 shadow-[0_0_10px_rgb(249,115,22,0.5)]"></div>
+        <div className="h-full bg-garfield-500 transition-all duration-300 shadow-[0_0_10px_rgb(249,115,22,0.5)]" style={{ width: `${scrollProgress}%` }}></div>
       </div>
 
       <div className="bg-slate-50/50 border-b border-slate-100 backdrop-blur-sm">
@@ -388,6 +410,10 @@ const ArticleDetail: React.FC = () => {
               <img
                 src={articleData.imageUrl}
                 alt={articleData.title}
+                width={1200}
+                height={628}
+                fetchPriority="high"
+                decoding="async"
                 className="h-full w-full object-cover"
               />
             </div>

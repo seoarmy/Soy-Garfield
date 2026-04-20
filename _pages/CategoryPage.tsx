@@ -10,6 +10,8 @@ const CategoryPage: React.FC = () => {
   const { slug } = useParams();
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+  const [nlEmail, setNlEmail] = useState('');
+  const [nlStatus, setNlStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
   const getCategoryName = (slug: string | undefined) => {
     if (!slug) return 'Últimas Noticias';
@@ -18,6 +20,17 @@ const CategoryPage: React.FC = () => {
       'ia': Category.IA,
     };
     return slugMap[slug.toLowerCase()] || 'Últimas Noticias';
+  };
+
+  const categoryEditorial: Record<string, { title: string; body: string }> = {
+    SEO: {
+      title: 'El SEO que importa, en español',
+      body: 'Desde técnicas de crawling hasta estrategias E-E-A-T y Google Discover: aquí encontrarás análisis profundos, experimentos reales y guías accionables para posicionar en 2025. Sin hype, con datos.',
+    },
+    IA: {
+      title: 'Inteligencia Artificial aplicada al marketing digital',
+      body: 'ChatGPT, Perplexity, Google AI Overviews, GEO y automatización de contenido: cubrimos cómo la IA transforma el ecosistema de búsqueda y qué hacer para mantenerte relevante.',
+    },
   };
 
   const categoryName = getCategoryName(slug);
@@ -105,6 +118,12 @@ const CategoryPage: React.FC = () => {
 
           {/* MAIN CONTENT */}
           <div className="lg:col-span-8">
+            {categoryEditorial[categoryName] && (
+              <div className="mb-12 p-8 bg-slate-50 rounded-3xl border border-slate-100">
+                <h2 className="text-lg font-black text-slate-900 mb-3">{categoryEditorial[categoryName].title}</h2>
+                <p className="text-sm text-slate-500 leading-relaxed font-medium">{categoryEditorial[categoryName].body}</p>
+              </div>
+            )}
             <div className="flex items-center justify-between mb-16 border-b border-slate-100 pb-8">
               <h2 className="text-xs font-black uppercase tracking-[0.4em] text-slate-400 flex items-center gap-4">
                 <TrendingUp size={20} className="text-garfield-500" />
@@ -152,10 +171,25 @@ const CategoryPage: React.FC = () => {
               <Mail className="h-12 w-12 text-garfield-500 mb-8" />
               <h4 className="text-3xl font-black mb-6 tracking-tight">Estrategia Semanal</h4>
               <p className="text-sm text-slate-400 mb-10 font-medium">Únete a los mejores profesionales del sector.</p>
-              <form className="space-y-4">
-                <input type="email" placeholder="Tu email profesional" className="w-full bg-white/5 border-white/10 rounded-2xl px-6 py-5 text-sm text-white focus:bg-white/10 transition-all outline-none border mb-2" />
-                <button className="w-full bg-garfield-500 text-white py-5 rounded-2xl text-[0.65rem] font-black uppercase tracking-widest shadow-xl shadow-garfield-500/20 active:scale-95 transition-all">Suscribirse ahora</button>
-              </form>
+              {nlStatus === 'success' ? (
+                <p className="text-garfield-400 font-black uppercase tracking-widest text-xs">¡Suscrito! Revisa tu bandeja.</p>
+              ) : (
+                <form className="space-y-4" onSubmit={async (e) => {
+                  e.preventDefault();
+                  setNlStatus('sending');
+                  try {
+                    const res = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: nlEmail }) });
+                    setNlStatus(res.ok ? 'success' : 'error');
+                    if (res.ok) setNlEmail('');
+                  } catch { setNlStatus('error'); }
+                }}>
+                  <input type="email" required value={nlEmail} onChange={e => setNlEmail(e.target.value)} placeholder="Tu email profesional" className="w-full bg-white/5 border-white/10 rounded-2xl px-6 py-5 text-sm text-white focus:bg-white/10 transition-all outline-none border mb-2" />
+                  <button disabled={nlStatus === 'sending'} className="w-full bg-garfield-500 text-white py-5 rounded-2xl text-[0.65rem] font-black uppercase tracking-widest shadow-xl shadow-garfield-500/20 active:scale-95 transition-all disabled:opacity-70">
+                    {nlStatus === 'sending' ? 'Enviando...' : 'Suscribirse ahora'}
+                  </button>
+                </form>
+              )}
+              {nlStatus === 'error' && <p className="text-red-400 text-xs mt-2">Error. Intenta de nuevo.</p>}
             </div>
 
             {/* Explore */}

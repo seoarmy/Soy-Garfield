@@ -4,14 +4,18 @@ import { getArticles } from '../services/articleService';
 import { Article } from '../types';
 import { ArrowRight, TrendingUp, Mail, Clock, Loader2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import pietroPhoto from '../assets/pietro.png';
+import pietroPhoto from '../assets/pietro.webp';
 import SEO from '../components/SEO';
 import BreakingNewsTicker from '../components/BreakingNewsTicker';
+
+const NEWSLETTER_ENDPOINT = '/api/contact';
 
 const Home: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'latest' | 'popular'>('latest');
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterStatus, setNewsletterStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -69,17 +73,24 @@ const Home: React.FC = () => {
               "inLanguage": "es"
             },
             {
-              "@type": "Organization",
+              "@type": ["Organization", "NewsMediaOrganization"],
               "@id": "https://soygarfield.com/#organization",
               "name": "Soy Garfield",
               "url": "https://soygarfield.com",
+              "publishingPrinciples": "https://soygarfield.com/about",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://soygarfield.com/assets/pietro.png"
+                "url": "https://soygarfield.com/SOY-garfiel-logo.png",
+                "width": 600,
+                "height": 60
               },
+              "description": "Publicación especializada en SEO e Inteligencia Artificial en español.",
+              "foundingDate": "2024",
+              "inLanguage": "es",
               "sameAs": [
-                "https://linkedin.com/in/pietrofiorillo",
-                "https://twitter.com/pietrofiorillo"
+                "https://www.linkedin.com/in/pietrofiorillo/",
+                "https://twitter.com/pietrofiorillo",
+                "https://www.instagram.com/theseoarmy/"
               ]
             }
           ]
@@ -103,6 +114,10 @@ const Home: React.FC = () => {
                 <img
                   src={mainStory.imageUrl || pietroPhoto}
                   alt={mainStory.title}
+                  width={1200}
+                  height={628}
+                  fetchPriority="high"
+                  decoding="async"
                   className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent"></div>
@@ -204,23 +219,51 @@ const Home: React.FC = () => {
             Recibe semanalmente estrategias avanzadas directamente en tu bandeja de entrada.
           </p>
 
-          <form
-            onSubmit={(e) => { e.preventDefault(); alert('¡Suscrito!'); }}
-            className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto mb-8"
-          >
-            <input
-              type="email"
-              required
-              placeholder="Tu mejor email"
-              className="flex-1 rounded-2xl border-transparent bg-white/10 px-6 py-4 text-white placeholder-slate-500 focus:bg-white/20 focus:ring-2 focus:ring-garfield-500 transition-all outline-none"
-            />
-            <button
-              type="submit"
-              className="rounded-2xl bg-garfield-500 px-8 py-4 text-sm font-black uppercase tracking-widest text-white hover:bg-garfield-600 transition-all shadow-lg active:scale-95"
+          {newsletterStatus === 'success' ? (
+            <p className="text-garfield-400 font-black uppercase tracking-widest text-sm mb-8">¡Suscrito! Revisa tu bandeja de entrada.</p>
+          ) : (
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault();
+                setNewsletterStatus('sending');
+                try {
+                  const res = await fetch(NEWSLETTER_ENDPOINT, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ email: newsletterEmail }),
+                  });
+                  if (res.ok) {
+                    setNewsletterStatus('success');
+                    setNewsletterEmail('');
+                  } else {
+                    setNewsletterStatus('error');
+                  }
+                } catch {
+                  setNewsletterStatus('error');
+                }
+              }}
+              className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto mb-8"
             >
-              Suscribirse <ArrowRight size={18} className="inline ml-1" />
-            </button>
-          </form>
+              <input
+                type="email"
+                required
+                value={newsletterEmail}
+                onChange={(e) => setNewsletterEmail(e.target.value)}
+                placeholder="Tu mejor email"
+                className="flex-1 rounded-2xl border-transparent bg-white/10 px-6 py-4 text-white placeholder-slate-500 focus:bg-white/20 focus:ring-2 focus:ring-garfield-500 transition-all outline-none"
+              />
+              <button
+                type="submit"
+                disabled={newsletterStatus === 'sending'}
+                className="rounded-2xl bg-garfield-500 px-8 py-4 text-sm font-black uppercase tracking-widest text-white hover:bg-garfield-600 transition-all shadow-lg active:scale-95 disabled:opacity-70"
+              >
+                {newsletterStatus === 'sending' ? 'Enviando...' : <span>Suscribirse <ArrowRight size={18} className="inline ml-1" /></span>}
+              </button>
+            </form>
+          )}
+          {newsletterStatus === 'error' && (
+            <p className="text-red-400 text-sm mb-4">Error al suscribir. Escríbenos a <a href="mailto:marketing@manyadigital.com.ar" className="underline">marketing@manyadigital.com.ar</a></p>
+          )}
         </div>
       </section>
 

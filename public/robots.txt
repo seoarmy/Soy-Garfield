@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
 
-# Sitemap
+# Sitemap principal
 Sitemap: https://soygarfield.com/sitemap.xml
+
+# Google News Sitemap (últimas 48h)
+Sitemap: https://soygarfield.com/sitemap-news.xml

@@ -3,6 +3,8 @@ import { Mail, MapPin, Send, MessageSquare, CheckCircle, ArrowRight } from 'luci
 import { useNavigate, Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 
+const CONTACT_ENDPOINT = '/api/contact';
+
 const Contact: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -19,15 +21,26 @@ const Contact: React.FC = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate submission delay
-    setTimeout(() => {
+    try {
+      const res = await fetch(CONTACT_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (res.ok) {
+        setIsSubmitted(true);
+        window.scrollTo(0, 0);
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch {
+      alert(`Error al enviar. Por favor escríbenos directamente a marketing@manyadigital.com.ar`);
+    } finally {
       setIsSubmitting(false);
-      setIsSubmitted(true);
-      window.scrollTo(0, 0);
-    }, 1500);
+    }
   };
 
   if (isSubmitted) {
@@ -84,9 +97,10 @@ const Contact: React.FC = () => {
               "url": "https://soygarfield.com/contact",
               "mainEntity": {
                 "@type": "Organization",
+                "@id": "https://soygarfield.com/#organization",
                 "name": "Soy Garfield",
                 "email": "marketing@manyadigital.com.ar",
-                "jobTitle": "Marketing Agency"
+                "description": "Agencia de marketing digital especializada en SEO e IA"
               }
             }
           ]
