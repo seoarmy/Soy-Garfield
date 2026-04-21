@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'es_AR',
-    siteName: 'Soy Garfield',
+    siteName: 'Pietro Fiorillo | Consultor SEO & IA',
   },
   twitter: { card: 'summary_large_image' },
   robots: { index: true, follow: true },

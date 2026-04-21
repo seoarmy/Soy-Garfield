@@ -11,7 +11,7 @@ import type { Metadata } from 'next';
 const BASE_URL = 'https://soygarfield.com';
 
 export const metadata: Metadata = {
-  title: 'Noticias de SEO & IA — Soy Garfield',
+  title: 'Noticias de SEO & IA | Soy Garfield | Pietro Fiorillo',
   description: 'El medio de referencia para dominar el futuro del marketing digital con noticias de última hora y estrategias avanzadas de IA.',
   alternates: { canonical: BASE_URL, languages: { 'es': BASE_URL, 'x-default': BASE_URL } },
   openGraph: { url: BASE_URL, images: [{ url: `${BASE_URL}/SOY-garfiel-logo.png`, width: 600, height: 60 }] },
