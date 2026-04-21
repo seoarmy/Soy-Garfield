@@ -142,7 +142,69 @@ export const article = defineType({
                     fields: [
                         { name: 'items', title: 'Elementos', type: 'array', of: [{ type: 'string' }] }
                     ]
+                },
+                {
+                    type: 'object',
+                    name: 'faqBlock',
+                    title: 'Preguntas Frecuentes (FAQ)',
+                    fields: [
+                        {
+                            name: 'items',
+                            title: 'Preguntas',
+                            type: 'array',
+                            of: [
+                                {
+                                    type: 'object',
+                                    name: 'faqItem',
+                                    title: 'Pregunta',
+                                    fields: [
+                                        { name: 'question', title: 'Pregunta', type: 'string', validation: (Rule: any) => Rule.required() },
+                                        { name: 'answer', title: 'Respuesta', type: 'text', rows: 4, validation: (Rule: any) => Rule.required() },
+                                    ],
+                                    preview: { select: { title: 'question', subtitle: 'answer' } },
+                                },
+                            ],
+                        },
+                    ],
+                    preview: {
+                        select: { items: 'items' },
+                        prepare({ items }: any) {
+                            return { title: `FAQ (${items?.length || 0} preguntas)` };
+                        },
+                    },
                 }
+            ],
+        }),
+        defineField({
+            name: 'faq',
+            title: 'Preguntas Frecuentes (FAQ)',
+            type: 'array',
+            group: 'content',
+            description: 'Agrega preguntas y respuestas para el acordeón FAQ y el schema FAQPage (E-E-A-T).',
+            of: [
+                {
+                    type: 'object',
+                    name: 'faqItem',
+                    title: 'Pregunta',
+                    fields: [
+                        {
+                            name: 'question',
+                            title: 'Pregunta',
+                            type: 'string',
+                            validation: (Rule: any) => Rule.required(),
+                        },
+                        {
+                            name: 'answer',
+                            title: 'Respuesta',
+                            type: 'text',
+                            rows: 4,
+                            validation: (Rule: any) => Rule.required(),
+                        },
+                    ],
+                    preview: {
+                        select: { title: 'question', subtitle: 'answer' },
+                    },
+                },
             ],
         }),
         defineField({

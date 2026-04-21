@@ -7,6 +7,8 @@ import { PortableText } from '@portabletext/react';
 import { Clock, Calendar, Linkedin, Twitter, Facebook, MessageSquare, Quote, Tag, Copy, Check, Terminal, ArrowRight, CheckCircle2 } from 'lucide-react';
 import ArticleCard from '../../../components/ArticleCard';
 import NewsletterForm from '../../../components/NewsletterForm';
+import TableOfContents, { extractTocItems } from '../../../components/TableOfContents';
+import FaqAccordion from '../../../components/FaqAccordion';
 import { Article } from '../../../types';
 
 const CodeBlock = ({ value }: { value: any }) => {
@@ -44,8 +46,16 @@ const CodeBlock = ({ value }: { value: any }) => {
 
 const portableTextComponents = {
   block: {
-    h2: ({ children }: any) => <h2 className="text-2xl lg:text-3xl font-black text-slate-900 mt-12 mb-6 tracking-tight">{children}</h2>,
-    h3: ({ children }: any) => <h3 className="text-xl lg:text-2xl font-black text-slate-900 mt-10 mb-4 tracking-tight">{children}</h3>,
+    h2: ({ children, value }: any) => {
+      const text = value?.children?.map((c: any) => c.text).join('') || '';
+      const id = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
+      return <h2 id={id} className="text-2xl lg:text-3xl font-black text-slate-900 mt-12 mb-6 tracking-tight scroll-mt-28">{children}</h2>;
+    },
+    h3: ({ children, value }: any) => {
+      const text = value?.children?.map((c: any) => c.text).join('') || '';
+      const id = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-');
+      return <h3 id={id} className="text-xl lg:text-2xl font-black text-slate-900 mt-10 mb-4 tracking-tight scroll-mt-28">{children}</h3>;
+    },
     normal: ({ children }: any) => <p className="text-xl text-slate-600 mb-8 font-medium leading-relaxed">{children}</p>,
   },
   types: {
@@ -88,6 +98,7 @@ const portableTextComponents = {
       </div>
     ),
     codeBlock: ({ value }: any) => <CodeBlock value={value} />,
+    faqBlock: ({ value }: any) => <FaqAccordion items={value?.items || []} />,
     divider: () => <hr className="my-12 border-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />,
     youtube: ({ value }: any) => {
       const url: string = value?.url || '';
@@ -173,6 +184,7 @@ export default function ArticleClient({ article, relatedArticles, sidebarArticle
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const tocItems = extractTocItems(article.content as any[]);
   const authorLink = article.authorSlug ? `/author/${article.authorSlug}` : '/about';
   const categorySlugMap: Record<string, string> = { 'SEO': 'seo', 'IA': 'ia', 'Social Media': 'social-media', 'Analítica': 'analitica' };
 
@@ -281,6 +293,7 @@ export default function ArticleClient({ article, relatedArticles, sidebarArticle
 
             {/* Article Body */}
             <article className="max-w-none">
+              <TableOfContents items={tocItems} />
               <PortableText value={article.content as any} components={portableTextComponents} />
 
               <div className="my-16 flex flex-col sm:flex-row items-center justify-center gap-4 py-12 border-y border-slate-100">

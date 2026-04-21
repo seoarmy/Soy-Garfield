@@ -36,6 +36,7 @@ export interface Article {
   imageUrl: string;
   isFeatured?: boolean;
   content: ContentBlock[];
+  faq?: { question: string; answer: string }[];
 }
 
 export interface WriterForm {

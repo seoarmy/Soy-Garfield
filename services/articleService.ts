@@ -59,7 +59,8 @@ export const getArticleBySlug = async (slug: string): Promise<Article | null> =>
     "seoTitle": coalesce(seoTitle, title),
     "seoDescription": coalesce(seoDescription, excerpt),
     isFeatured,
-    content
+    content,
+    faq
   }`;
 
   try {

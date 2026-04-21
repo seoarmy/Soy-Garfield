@@ -54,6 +54,12 @@ export default async function ArticlePage({ params }: Props) {
   const relatedArticles = allArticles.filter(a => a.category === article.category && a.slug !== slug).slice(0, 2);
   const sidebarArticles = allArticles.filter(a => a.slug !== slug).slice(0, 3);
 
+  // Extract FAQs from content blocks OR from standalone faq field
+  const faqFromContent = (article.content as any[])
+    ?.filter((b: any) => b._type === 'faqBlock')
+    .flatMap((b: any) => b.items || []) ?? [];
+  const faqItems = faqFromContent.length > 0 ? faqFromContent : (article.faq ?? []);
+
   const schema = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -84,6 +90,14 @@ export default async function ArticlePage({ params }: Props) {
           { '@type': 'ListItem', position: 3, name: article.title, item: `${BASE_URL}/article/${article.slug}` },
         ],
       },
+      ...(faqItems.length > 0 ? [{
+        '@type': 'FAQPage',
+        mainEntity: faqItems.map(({ question, answer }: { question: string; answer: string }) => ({
+          '@type': 'Question',
+          name: question,
+          acceptedAnswer: { '@type': 'Answer', text: answer },
+        })),
+      }] : []),
     ],
   };
 
