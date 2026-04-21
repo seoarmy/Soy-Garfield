@@ -8,6 +8,8 @@ import Image from 'next/image';
 import { TrendingUp, Clock, ArrowRight } from 'lucide-react';
 import type { Metadata } from 'next';
 
+export const revalidate = 60;
+
 const BASE_URL = 'https://soygarfield.com';
 
 export const metadata: Metadata = {

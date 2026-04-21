@@ -3,6 +3,9 @@ import type { Metadata } from 'next';
 import { getArticleBySlug, getArticles } from '../../../services/articleService';
 import ArticleClient from './ArticleClient';
 
+export const revalidate = 60;
+export const dynamicParams = true;
+
 const BASE_URL = 'https://soygarfield.com';
 const categorySlugMap: Record<string, string> = { 'SEO': 'seo', 'IA': 'ia', 'Social Media': 'social-media', 'Analítica': 'analitica' };
 

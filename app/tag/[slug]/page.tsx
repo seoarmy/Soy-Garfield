@@ -1,4 +1,7 @@
 import type { Metadata } from 'next';
+
+export const revalidate = 60;
+export const dynamicParams = true;
 import Link from 'next/link';
 import { getArticlesByTag, getAllTags } from '../../../services/articleService';
 import ArticleCard from '../../../components/ArticleCard';
