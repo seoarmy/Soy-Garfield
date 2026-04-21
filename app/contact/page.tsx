@@ -27,7 +27,11 @@ const schema = {
         '@type': 'Organization',
         '@id': `${BASE_URL}/#organization`,
         name: 'Soy Garfield',
-        email: 'marketing@manyadigital.com.ar',
+        contactPoint: {
+          '@type': 'ContactPoint',
+          contactType: 'customer support',
+          url: `${BASE_URL}/contact`,
+        },
       },
     },
   ],

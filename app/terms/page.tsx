@@ -4,6 +4,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Términos de Servicio',
   description: 'Términos y condiciones de uso de Soy Garfield.',
+  robots: { index: false, follow: true },
 };
 
 export default function TermsPage() {

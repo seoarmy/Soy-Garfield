@@ -49,12 +49,36 @@ export default async function CategoryPage({ params }: Props) {
   const filteredArticles = articles.filter(a => categoryName === 'Últimas Noticias' ? true : a.category.toString() === categoryName);
   const sidebarArticles = articles.filter(a => a.category.toString() !== categoryName).slice(0, 3);
 
+  const pageUrl = `${BASE_URL}/category/${slug}`;
   const schema = {
     '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Inicio', item: BASE_URL },
-      { '@type': 'ListItem', position: 2, name: categoryName, item: `${BASE_URL}/category/${slug}` },
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        '@id': `${pageUrl}#collection`,
+        url: pageUrl,
+        name: `Artículos de ${categoryName}`,
+        inLanguage: 'es',
+        isPartOf: { '@id': `${BASE_URL}/#website` },
+        breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: filteredArticles.map((article, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            url: `${BASE_URL}/article/${article.slug}`,
+            name: article.title,
+          })),
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': `${pageUrl}#breadcrumb`,
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Inicio', item: BASE_URL },
+          { '@type': 'ListItem', position: 2, name: categoryName, item: pageUrl },
+        ],
+      },
     ],
   };
 
@@ -100,7 +124,7 @@ export default async function CategoryPage({ params }: Props) {
 
             <div className="grid grid-cols-1 gap-20">
               {filteredArticles.length > 0 ? (
-                filteredArticles.map((article) => <ArticleCard key={article.id} article={article} />)
+                filteredArticles.map((article, index) => <ArticleCard key={article.id} article={article} isFirst={index === 0} />)
               ) : (
                 <div className="text-center py-32 bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-200">
                   <Zap size={40} className="mx-auto text-slate-300 mb-8" />

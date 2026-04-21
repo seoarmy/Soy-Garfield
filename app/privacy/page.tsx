@@ -4,6 +4,7 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'Política de Privacidad',
   description: 'Conoce cómo protegemos tus datos personales en Soy Garfield.',
+  robots: { index: false, follow: true },
 };
 
 export default function PrivacyPage() {

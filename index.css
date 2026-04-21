@@ -1,6 +1,14 @@
 @import "tailwindcss";
 @import "@fontsource-variable/inter";
 
+@font-face {
+  font-family: 'Inter Variable';
+  font-display: swap;
+  font-weight: 100 900;
+  font-style: normal;
+  src: url('@fontsource-variable/inter/files/inter-latin-wght-normal.woff2') format('woff2-variations');
+}
+
 @theme {
   --font-sans: 'Inter Variable', 'Inter', system-ui, sans-serif;
 

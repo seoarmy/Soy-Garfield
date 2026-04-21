@@ -52,7 +52,9 @@ const schema = {
         name: 'Pietro Fiorillo',
         url: `${BASE_URL}/author/pietro-fiorillo`,
         sameAs: [
-          'https://www.linkedin.com/in/pietrofiorillo',
+          'https://www.linkedin.com/in/pietrofiorillo/',
+          'https://twitter.com/pietrofiorillo',
+          'https://www.youtube.com/@thegarfieldofseo',
         ],
       },
     },

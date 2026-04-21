@@ -2,13 +2,35 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
   <url>
+    <loc>https://soygarfield.com/article/google-busqueda-basada-en-tareas-agentic-search-2026</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Soy Garfield</news:name>
+        <news:language>es</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-21T21:46:11.000Z</news:publication_date>
+      <news:title>Google convierte Search en una interfaz de tareas</news:title>
+    </news:news>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/article/google-read-more-links-snippets-mejores-practicas-2026</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Soy Garfield</news:name>
+        <news:language>es</news:language>
+      </news:publication>
+      <news:publication_date>2026-04-21T20:34:33.000Z</news:publication_date>
+      <news:title>Google publica las mejores prácticas para activar los enlaces &quot;Leer más&quot; en los snippets de búsqueda</news:title>
+    </news:news>
+  </url>
+  <url>
     <loc>https://soygarfield.com/article/trafico-ia-convierte-mejor-que-paid-search-adobe-2026</loc>
     <news:news>
       <news:publication>
         <news:name>Soy Garfield</news:name>
         <news:language>es</news:language>
       </news:publication>
-      <news:publication_date>2026-04-21T00:00:00.000Z</news:publication_date>
+      <news:publication_date>2026-04-20T22:34:38.000Z</news:publication_date>
       <news:title>El tráfico de IA ya convierte mejor que el paid search. Los datos de Adobe lo demuestran</news:title>
     </news:news>
   </url>
@@ -19,7 +41,7 @@
         <news:name>Soy Garfield</news:name>
         <news:language>es</news:language>
       </news:publication>
-      <news:publication_date>2026-04-21T00:00:00.000Z</news:publication_date>
+      <news:publication_date>2026-04-20T22:34:38.000Z</news:publication_date>
       <news:title>El core update de Google de marzo 2026 fue más disruptivo que el de diciembre. Esto es lo que cambió</news:title>
     </news:news>
   </url>

@@ -15,7 +15,7 @@ const BASE_URL = 'https://soygarfield.com';
 export const metadata: Metadata = {
   title: 'Noticias de SEO & IA | Soy Garfield | Pietro Fiorillo',
   description: 'El medio de referencia para dominar el futuro del marketing digital con noticias de última hora y estrategias avanzadas de IA.',
-  alternates: { canonical: BASE_URL, languages: { 'es': BASE_URL, 'x-default': BASE_URL } },
+  alternates: { canonical: BASE_URL },
   openGraph: { url: BASE_URL, images: [{ url: `${BASE_URL}/SOY-garfiel-logo.png`, width: 600, height: 60 }] },
 };
 
@@ -36,7 +36,7 @@ const schema = {
       '@id': `${BASE_URL}/#organization`,
       name: 'Soy Garfield',
       url: BASE_URL,
-      publishingPrinciples: `${BASE_URL}/about`,
+      publishingPrinciples: `${BASE_URL}/sobre/politica-editorial`,
       logo: { '@type': 'ImageObject', url: `${BASE_URL}/SOY-garfiel-logo.png`, width: 600, height: 60 },
       description: 'Publicación especializada en SEO e Inteligencia Artificial en español.',
       foundingDate: '2024',
@@ -45,6 +45,7 @@ const schema = {
         'https://www.linkedin.com/in/pietrofiorillo/',
         'https://twitter.com/pietrofiorillo',
         'https://www.instagram.com/theseoarmy/',
+        'https://www.youtube.com/@thegarfieldofseo',
       ],
     },
   ],
@@ -71,7 +72,7 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-white font-sans text-slate-900 pb-20 lg:pb-0">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-      <h1 className="sr-only">Noticias de SEO & IA</h1>
+      <h1 className="text-center pt-6 text-sm sm:text-base font-black tracking-[0.2em] uppercase text-slate-700">Noticias de SEO & IA</h1>
 
       <BreakingNewsTicker />
 

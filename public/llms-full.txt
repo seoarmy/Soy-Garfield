@@ -1,0 +1,37 @@
+# SoyGarfield — llms-full
+
+lang: es
+dateModified: 2026-04-22
+license: https://soygarfield.com/terms
+canonical: https://soygarfield.com/llms.txt
+
+## Sitio
+- https://soygarfield.com/
+- https://soygarfield.com/about
+- https://soygarfield.com/contact
+- https://soygarfield.com/authors
+- https://soygarfield.com/category/seo
+- https://soygarfield.com/category/ia
+- https://soygarfield.com/sobre/politica-editorial
+
+## Autor
+- https://soygarfield.com/author/pietro-fiorillo
+
+## Artículos
+- https://soygarfield.com/article/google-busqueda-basada-en-tareas-agentic-search-2026
+- https://soygarfield.com/article/google-read-more-links-snippets-mejores-practicas-2026
+- https://soygarfield.com/article/trafico-ia-convierte-mejor-que-paid-search-adobe-2026
+- https://soygarfield.com/article/google-core-update-marzo-2026-mas-volatil-diciembre
+- https://soygarfield.com/article/airbnb-confirma-trafico-ia-convierte-mas-que-google
+- https://soygarfield.com/article/necesitas-web-en-2026-para-hacer-seo
+- https://soygarfield.com/article/google-mezcla-redes-noticias-asi-debes-optimizar-en-2026
+- https://soygarfield.com/article/como-hacer-seo-local-en-90-dias
+- https://soygarfield.com/article/Ia-obliga-seo-a-pasar-del-ranking-a-la-demanda
+- https://soygarfield.com/article/seo-con-ia-supera-los-4-filtros-invisibles
+- https://soygarfield.com/article/error-en-http-afecta-tu-seo-tecnico
+- https://soygarfield.com/article/openai-confirma-anuncios
+- https://soygarfield.com/article/google-lanza-webmcp
+
+## Sitemaps
+- https://soygarfield.com/sitemap.xml
+- https://soygarfield.com/sitemap-news.xml

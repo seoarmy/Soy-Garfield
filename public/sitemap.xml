@@ -2,224 +2,106 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://soygarfield.com</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2026-04-21T22:51:19.015Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/about</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2025-01-01T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/author/pietro-fiorillo</loc>
+    <lastmod>2025-01-01T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/contact</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <lastmod>2025-01-01T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/authors</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <lastmod>2025-01-01T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/tag</loc>
+    <lastmod>2026-04-21T22:51:19.015Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/category/seo</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-04-21T22:51:19.015Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/category/ia</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-04-21T22:51:19.015Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/sobre/politica-editorial</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <lastmod>2025-01-01T00:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/author/pietro-fiorillo</loc>
+    <lastmod>2026-04-21T22:51:19.015Z</lastmod>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/article/google-busqueda-basada-en-tareas-agentic-search-2026</loc>
+    <lastmod>2026-04-21T21:59:17.000Z</lastmod>
+  </url>
+  <url>
+    <loc>https://soygarfield.com/article/google-read-more-links-snippets-mejores-practicas-2026</loc>
+    <lastmod>2026-04-21T21:15:40.000Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/article/trafico-ia-convierte-mejor-que-paid-search-adobe-2026</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-04-21T21:06:15.000Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/article/google-core-update-marzo-2026-mas-volatil-diciembre</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-04-20T22:49:03.000Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/article/airbnb-confirma-trafico-ia-convierte-mas-que-google</loc>
-    <lastmod>2026-02-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-02-17T22:18:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/article/necesitas-web-en-2026-para-hacer-seo</loc>
-    <lastmod>2026-02-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-02-15T19:23:29.000Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/article/como-hacer-seo-local-en-90-dias</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-02-14T13:12:25.000Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/article/google-mezcla-redes-noticias-asi-debes-optimizar-en-2026</loc>
-    <lastmod>2026-02-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-02-14T13:01:13.000Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/article/Ia-obliga-seo-a-pasar-del-ranking-a-la-demanda</loc>
-    <lastmod>2026-02-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-02-13T01:07:13.000Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/article/seo-con-ia-supera-los-4-filtros-invisibles</loc>
-    <lastmod>2026-02-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-02-13T00:34:11.000Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/article/error-en-http-afecta-tu-seo-tecnico</loc>
-    <lastmod>2026-02-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-02-11T22:27:46.000Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/article/openai-confirma-anuncios</loc>
-    <lastmod>2026-02-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <lastmod>2026-02-11T21:34:49.000Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/article/google-lanza-webmcp</loc>
-    <lastmod>2026-02-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/seo-local</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/seo</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <lastmod>2026-02-11T21:22:03.000Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/tag/google</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <lastmod>2026-04-21T22:51:19.015Z</lastmod>
   </url>
   <url>
     <loc>https://soygarfield.com/tag/ia</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <lastmod>2026-04-21T22:51:19.015Z</lastmod>
   </url>
   <url>
-    <loc>https://soygarfield.com/tag/open-ai</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/ppc</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/conversion</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/google</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/mcp</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/http</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/inteligencia-artificial</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/geo</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/ai-traffic</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/google-core-update</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/actualizaci%C3%B3n-de-algoritmo</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/seo-2026</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/volatilidad-serp</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/se-ranking</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://soygarfield.com/tag/aleyda-solis</loc>
-    <lastmod>2026-04-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <loc>https://soygarfield.com/tag/seo</loc>
+    <lastmod>2026-04-21T22:51:19.015Z</lastmod>
   </url>
 </urlset>

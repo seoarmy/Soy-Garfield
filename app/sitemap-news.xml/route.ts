@@ -17,12 +17,12 @@ export async function GET() {
   const cutoff = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString();
 
   const articles = await client.fetch<
-    { slug: string; title: string; date: string }[]
+    { slug: string; title: string; createdAt: string }[]
   >(
-    `*[_type == "article" && date >= $cutoff] | order(date desc) {
+    `*[_type == "article" && _createdAt >= $cutoff] | order(_createdAt desc) {
       "slug": slug.current,
-      title,
-      date
+      "title": coalesce(seoTitle, title),
+      "createdAt": _createdAt
     }`,
     { cutoff },
   );
@@ -36,7 +36,7 @@ export async function GET() {
         <news:name>Soy Garfield</news:name>
         <news:language>es</news:language>
       </news:publication>
-      <news:publication_date>${new Date(a.date).toISOString()}</news:publication_date>
+      <news:publication_date>${new Date(a.createdAt).toISOString()}</news:publication_date>
       <news:title>${escapeXml(a.title)}</news:title>
     </news:news>
   </url>`,

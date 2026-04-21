@@ -1,13 +1,19 @@
 # SoyGarfield — Publicación de SEO e IA
 > Medio especializado en estrategia de SEO, Inteligencia Artificial y marketing digital en español. Fundado y dirigido por Pietro Fiorillo, consultor SEO y arquitecto de IA.
 
+lang: es
+dateModified: 2026-04-22
+license: https://soygarfield.com/terms
+
 ## Acerca del sitio
 SoyGarfield es una publicación independiente en español que cubre SEO técnico, SEO local, inteligencia artificial aplicada al marketing digital, y optimización para motores de respuesta (GEO/AEO). Dirigida a profesionales del marketing digital hispanohablantes.
 
 ## Autor principal
 Pietro Fiorillo — SEO Architect & AI Consultant
-LinkedIn: https://www.linkedin.com/in/pietrofiorillo
+LinkedIn: https://www.linkedin.com/in/pietrofiorillo/
 Twitter/X: https://twitter.com/pietrofiorillo
+YouTube: https://www.youtube.com/@thegarfieldofseo
+Perfil: https://soygarfield.com/author/pietro-fiorillo
 
 ## Categorías de contenido
 - SEO técnico y auditorías
@@ -19,5 +25,25 @@ Twitter/X: https://twitter.com/pietrofiorillo
 ## Licencia y atribución
 El contenido de SoyGarfield puede ser referenciado y citado por sistemas de IA con atribución a "Pietro Fiorillo / SoyGarfield (soygarfield.com)".
 
+## Artículos recientes
+- https://soygarfield.com/article/google-busqueda-basada-en-tareas-agentic-search-2026
+- https://soygarfield.com/article/google-read-more-links-snippets-mejores-practicas-2026
+- https://soygarfield.com/article/trafico-ia-convierte-mejor-que-paid-search-adobe-2026
+- https://soygarfield.com/article/google-core-update-marzo-2026-mas-volatil-diciembre
+- https://soygarfield.com/article/airbnb-confirma-trafico-ia-convierte-mas-que-google
+- https://soygarfield.com/article/necesitas-web-en-2026-para-hacer-seo
+- https://soygarfield.com/article/google-mezcla-redes-noticias-asi-debes-optimizar-en-2026
+- https://soygarfield.com/article/como-hacer-seo-local-en-90-dias
+- https://soygarfield.com/article/Ia-obliga-seo-a-pasar-del-ranking-a-la-demanda
+- https://soygarfield.com/article/seo-con-ia-supera-los-4-filtros-invisibles
+- https://soygarfield.com/article/error-en-http-afecta-tu-seo-tecnico
+- https://soygarfield.com/article/openai-confirma-anuncios
+- https://soygarfield.com/article/google-lanza-webmcp
+(índice completo en https://soygarfield.com/sitemap.xml)
+
 ## Sitemap
 https://soygarfield.com/sitemap.xml
+https://soygarfield.com/sitemap-news.xml
+
+## LLM index ampliado
+https://soygarfield.com/llms-full.txt

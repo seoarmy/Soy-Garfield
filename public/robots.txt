@@ -1,6 +1,22 @@
 User-agent: *
 Allow: /
 
+# AI search bots — explicit allow for indexing / citation
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
 # Sitemap principal
 Sitemap: https://soygarfield.com/sitemap.xml
 

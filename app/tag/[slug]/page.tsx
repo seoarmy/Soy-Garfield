@@ -25,11 +25,13 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const tag = decodeURIComponent(slug).replace(/-/g, ' ');
-  const label = tagToLabel(tag);
+  const [allTags, articles] = await Promise.all([getAllTags(), getArticlesByTag(decodeURIComponent(slug).replace(/-/g, ' '))]);
+  const exactTag = allTags.find((t) => t.toLowerCase().replace(/\s+/g, '-') === slug.toLowerCase()) ?? decodeURIComponent(slug).replace(/-/g, ' ');
+  const label = tagToLabel(exactTag);
   return {
     title: `${label} — Artículos etiquetados | Soy Garfield`,
     description: `Todos los artículos sobre ${label} en Soy Garfield. Guías técnicas, análisis y estrategias SEO & IA en español.`,
+    robots: articles.length < 3 ? { index: false, follow: true } : undefined,
     alternates: { canonical: `${BASE_URL}/tag/${slug}` },
     openGraph: {
       title: `${label} — Soy Garfield`,
@@ -55,6 +57,7 @@ export default async function TagPage({ params }: Props) {
   const articles = await getArticlesByTag(exactTag);
 
   const relatedTags = allTags.filter((t) => t.toLowerCase() !== exactTag.toLowerCase()).slice(0, 12);
+  const tagIntro = `En esta página reunimos análisis, noticias y guías accionables sobre ${label} aplicadas al SEO y a la inteligencia artificial en escenarios reales. No es un archivo automático: aquí priorizamos contenido con contexto estratégico, ejemplos prácticos y decisiones que puedes implementar sin perder tiempo en teoría vacía. Si trabajas en marketing, growth o consultoría, vas a encontrar marcos claros para diagnosticar problemas, priorizar oportunidades y ejecutar mejoras medibles. Revisa cada artículo en orden de publicación para detectar patrones, cambios de criterio en Google y tácticas que siguen funcionando en 2026. Esta etiqueta está diseñada para ayudarte a tomar mejores decisiones, no solo para informarte.`;
 
   const schema = {
     '@context': 'https://schema.org',
@@ -98,6 +101,11 @@ export default async function TagPage({ params }: Props) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
 
           <div className="lg:col-span-8">
+            <div className="mb-12 rounded-3xl bg-slate-50 border border-slate-100 p-8 lg:p-10">
+              <h2 className="text-lg font-black text-slate-900 mb-4">Qué encontrarás en #{label}</h2>
+              <p className="text-slate-600 leading-relaxed font-medium">{tagIntro}</p>
+            </div>
+
             <div className="flex items-center justify-between mb-16 border-b border-slate-100 pb-8">
               <h2 className="text-xs font-black uppercase tracking-[0.4em] text-slate-400 flex items-center gap-4">
                 <Tag size={20} className="text-garfield-500" />

@@ -13,7 +13,7 @@ const BASE_URL = 'https://soygarfield.com';
 export const metadata: Metadata = {
   title: 'Sobre Pietro Fiorillo',
   description: 'Consultor estratégico de SEO e IA. Experto en posicionamiento y marketing digital.',
-  alternates: { canonical: `${BASE_URL}/about` },
+  alternates: { canonical: `${BASE_URL}/author/pietro-fiorillo` },
 };
 
 export default async function AboutPage() {
@@ -40,14 +40,20 @@ export default async function AboutPage() {
         '@type': 'ProfilePage',
         mainEntity: {
           '@type': 'Person',
+          '@id': `${BASE_URL}/#person`,
           name: author.name,
           jobTitle: author.role,
           description: author.description || '',
-          url: `${BASE_URL}/about`,
-          image: author.image || '',
+          url: `${BASE_URL}/author/pietro-fiorillo`,
+          image: author.image ? { '@type': 'ImageObject', url: author.image, width: 200, height: 200 } : undefined,
           inLanguage: 'es',
           knowsAbout: ['Search Engine Optimization', 'Generative Engine Optimization', 'SEO Técnico', 'SEO Local', 'Inteligencia Artificial aplicada al Marketing'],
-          sameAs: ['https://www.linkedin.com/in/pietrofiorillo/', 'https://www.instagram.com/theseoarmy/'].filter(Boolean),
+          sameAs: [
+            'https://www.linkedin.com/in/pietrofiorillo/',
+            'https://twitter.com/pietrofiorillo',
+            'https://www.instagram.com/theseoarmy/',
+            'https://www.youtube.com/@thegarfieldofseo',
+          ],
         },
       },
     ],

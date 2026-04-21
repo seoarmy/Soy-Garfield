@@ -1,10 +1,8 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { PortableText } from '@portabletext/react';
-import { Clock, Calendar, Linkedin, Twitter, Facebook, MessageSquare, Quote, Tag, Copy, Check, Terminal, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { Clock, Calendar, Linkedin, Facebook, MessageSquare, Quote, Tag, Terminal, ArrowRight, CheckCircle2 } from 'lucide-react';
 import ArticleCard from '../../../components/ArticleCard';
 import NewsletterForm from '../../../components/NewsletterForm';
 import TableOfContents, { extractTocItems } from '../../../components/TableOfContents';
@@ -12,7 +10,6 @@ import FaqAccordion from '../../../components/FaqAccordion';
 import { Article } from '../../../types';
 
 const CodeBlock = ({ value }: { value: any }) => {
-  const [copied, setCopied] = useState(false);
   return (
     <div className="my-10 rounded-[1.5rem] overflow-hidden bg-[#0d1117] shadow-2xl border border-slate-800/50 group transition-all duration-300 hover:border-garfield-500/30">
       <div className="flex items-center justify-between px-5 py-3 bg-[#161b22] border-b border-slate-800/50">
@@ -27,18 +24,10 @@ const CodeBlock = ({ value }: { value: any }) => {
         </div>
         <div className="w-14"></div>
       </div>
-      <div className="relative">
-        <button
-          onClick={() => { navigator.clipboard.writeText(value.code); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
-          className="absolute top-4 right-4 p-2.5 rounded-xl bg-white/5 hover:bg-garfield-500 hover:text-white text-slate-400 transition-all duration-300 opacity-0 group-hover:opacity-100"
-        >
-          {copied ? <Check size={16} strokeWidth={2.5} className="text-white" /> : <Copy size={16} strokeWidth={2} />}
-        </button>
-        <div className="p-6 md:p-8 overflow-x-auto">
-          <pre className="font-mono text-sm md:text-base leading-relaxed text-slate-300">
-            <code>{value.code}</code>
-          </pre>
-        </div>
+      <div className="p-6 md:p-8 overflow-x-auto">
+        <pre className="font-mono text-sm md:text-base leading-relaxed text-slate-300">
+          <code>{value.code}</code>
+        </pre>
       </div>
     </div>
   );
@@ -59,12 +48,25 @@ const portableTextComponents = {
     normal: ({ children }: any) => <p className="text-xl text-slate-600 mb-8 font-medium leading-relaxed">{children}</p>,
   },
   types: {
-    image: ({ value }: any) => (
-      <figure className="my-12">
-        <img src={value.asset?.url || ''} alt={value.alt || ''} className="w-full rounded-[2.5rem] shadow-xl" />
-        {value.caption && <figcaption className="mt-4 text-center text-sm text-slate-400 font-medium italic">{value.caption}</figcaption>}
-      </figure>
-    ),
+    image: ({ value }: any) => {
+      const src = value?.asset?.url;
+      if (!src) return null;
+      const width = value?.asset?.metadata?.dimensions?.width || 1200;
+      const height = value?.asset?.metadata?.dimensions?.height || 628;
+      return (
+        <figure className="my-12">
+          <Image
+            src={src}
+            alt={value?.alt || 'Imagen del artículo'}
+            width={width}
+            height={height}
+            loading="lazy"
+            className="w-full h-auto rounded-[2.5rem] shadow-xl"
+          />
+          {value?.caption && <figcaption className="mt-4 text-center text-sm text-slate-400 font-medium italic">{value.caption}</figcaption>}
+        </figure>
+      );
+    },
     quote: ({ value }: any) => (
       <blockquote className="my-16 px-8 sm:px-12 py-14 bg-slate-900 rounded-[3rem] text-white overflow-hidden relative shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)] group">
         <div className="absolute top-0 right-0 -mt-12 -mr-12 h-40 w-40 bg-garfield-500 rounded-full opacity-20 blur-[60px]"></div>
@@ -111,6 +113,7 @@ const portableTextComponents = {
             title={value?.title || 'Video'}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
+            loading="lazy"
             className="w-full h-full"
           />
         </div>
@@ -172,41 +175,15 @@ interface Props {
 }
 
 export default function ArticleClient({ article, relatedArticles, sidebarArticles }: Props) {
-  const [scrollProgress, setScrollProgress] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const el = document.documentElement;
-      const total = el.scrollHeight - el.clientHeight;
-      setScrollProgress(total > 0 ? (el.scrollTop / total) * 100 : 0);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const tocItems = extractTocItems(article.content as any[]);
   const authorLink = article.authorSlug ? `/author/${article.authorSlug}` : '/about';
   const categorySlugMap: Record<string, string> = { 'SEO': 'seo', 'IA': 'ia', 'Social Media': 'social-media', 'Analítica': 'analitica' };
-
-  const share = (network: string) => {
-    const url = encodeURIComponent(window.location.href);
-    const text = encodeURIComponent(article.title);
-    const urls: Record<string, string> = {
-      linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${url}`,
-      twitter: `https://twitter.com/intent/tweet?url=${url}&text=${text}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
-      whatsapp: `https://wa.me/?text=${text}%20${url}`,
-    };
-    window.open(urls[network], '_blank');
-  };
+  const articleUrl = `https://soygarfield.com/article/${article.slug}`;
+  const encodedArticleUrl = encodeURIComponent(articleUrl);
+  const encodedTitle = encodeURIComponent(article.title);
 
   return (
     <div className="min-h-screen bg-white pb-20">
-      {/* Reading progress bar */}
-      <div className="fixed top-0 left-0 w-full h-1.5 z-[150] bg-slate-100">
-        <div className="h-full bg-garfield-500 transition-all duration-300 shadow-[0_0_10px_rgb(249,115,22,0.5)]" style={{ width: `${scrollProgress}%` }}></div>
-      </div>
-
       {/* Breadcrumb */}
       <div className="bg-slate-50/50 border-b border-slate-100">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
@@ -270,25 +247,40 @@ export default function ArticleClient({ article, relatedArticles, sidebarArticle
                 </Link>
 
                 <div className="flex items-center gap-3">
-                  {['linkedin', 'facebook', 'whatsapp'].map((network) => (
-                    <button
-                      key={network}
-                      onClick={() => share(network)}
-                      className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-slate-900 hover:text-white"
-                      aria-label={`Compartir en ${network}`}
-                    >
-                      {network === 'linkedin' && <Linkedin size={20} strokeWidth={1.5} />}
-                      {network === 'facebook' && <Facebook size={20} strokeWidth={1.5} />}
-                      {network === 'whatsapp' && <MessageSquare size={20} strokeWidth={1.5} />}
-                    </button>
-                  ))}
+                  <a
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedArticleUrl}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-slate-900 hover:text-white"
+                    aria-label="Compartir en linkedin"
+                  >
+                    <Linkedin size={20} strokeWidth={1.5} />
+                  </a>
+                  <a
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodedArticleUrl}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-slate-900 hover:text-white"
+                    aria-label="Compartir en facebook"
+                  >
+                    <Facebook size={20} strokeWidth={1.5} />
+                  </a>
+                  <a
+                    href={`https://wa.me/?text=${encodedTitle}%20${encodedArticleUrl}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="h-12 w-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 transition-all duration-300 hover:scale-110 active:scale-95 hover:bg-slate-900 hover:text-white"
+                    aria-label="Compartir en whatsapp"
+                  >
+                    <MessageSquare size={20} strokeWidth={1.5} />
+                  </a>
                 </div>
               </div>
             </header>
 
             {/* Hero Image */}
             <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[2.5rem] mb-12 shadow-2xl">
-              <Image src={article.imageUrl} alt={article.title} fill priority sizes="(max-width: 1024px) 100vw, 66vw" className="object-cover" />
+              <Image src={article.imageUrl} alt={article.title} fill priority fetchPriority="high" sizes="(max-width: 1024px) 100vw, 66vw" className="object-cover" />
             </div>
 
             {/* Article Body */}
@@ -299,13 +291,15 @@ export default function ArticleClient({ article, relatedArticles, sidebarArticle
               <div className="my-16 flex flex-col sm:flex-row items-center justify-center gap-4 py-12 border-y border-slate-100">
                 <span className="text-sm font-black text-slate-900 uppercase tracking-widest">¿Te ha gustado este artículo?</span>
                 <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                  <button
-                    onClick={() => share('linkedin')}
+                  <a
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedArticleUrl}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-slate-900 text-white text-[0.65rem] font-black uppercase tracking-widest hover:bg-indigo-600 transition-all shadow-lg active:scale-95"
                   >
                     <Linkedin size={16} />
                     Compartir en LinkedIn
-                  </button>
+                  </a>
                   <Link
                     href="/contact"
                     className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl border-2 border-slate-900 text-slate-900 text-[0.65rem] font-black uppercase tracking-widest hover:bg-slate-900 hover:text-white transition-all active:scale-95"

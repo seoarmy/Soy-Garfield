@@ -60,27 +60,41 @@ export default async function ArticlePage({ params }: Props) {
     .flatMap((b: any) => b.items || []) ?? [];
   const faqItems = faqFromContent.length > 0 ? faqFromContent : (article.faq ?? []);
 
+  const articleUrl = `${BASE_URL}/article/${article.slug}`;
+  const authorSlug = article.authorSlug || 'pietro-fiorillo';
+  const isoPublished = article.date ? new Date(article.date).toISOString() : new Date().toISOString();
+  const isoModified = (article as any).updatedAt ? new Date((article as any).updatedAt).toISOString() : isoPublished;
+
   const schema = {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': ['NewsArticle', 'Article'],
+        '@id': `${articleUrl}#article`,
+        url: articleUrl,
         headline: article.seoTitle || article.title,
-        image: { '@type': 'ImageObject', url: article.imageUrl, width: 1200, height: 675 },
-        author: { '@type': 'Person', name: article.author, url: `${BASE_URL}/author/${article.authorSlug || 'pietro-fiorillo'}` },
+        image: { '@type': 'ImageObject', url: article.imageUrl, width: 1200, height: 628 },
+        author: {
+          '@type': 'Person',
+          '@id': `${BASE_URL}/#person`,
+          name: article.author,
+          url: `${BASE_URL}/author/${authorSlug}`,
+        },
         publisher: {
           '@type': 'Organization',
           '@id': `${BASE_URL}/#organization`,
           name: 'Soy Garfield',
           logo: { '@type': 'ImageObject', url: `${BASE_URL}/SOY-garfiel-logo.png`, width: 600, height: 60 },
         },
-        datePublished: article.date,
-        dateModified: (article as any).updatedAt || article.date,
+        datePublished: isoPublished,
+        dateModified: isoModified,
         description: article.seoDescription || article.excerpt,
+        articleSection: article.category,
+        keywords: article.tags || [],
         isAccessibleForFree: 'True',
         inLanguage: 'es',
         speakable: { '@type': 'SpeakableSpecification', cssSelector: ['h1', 'h2'] },
-        mainEntityOfPage: { '@type': 'WebPage', '@id': `${BASE_URL}/article/${article.slug}` },
+        mainEntityOfPage: { '@type': 'WebPage', '@id': articleUrl },
       },
       {
         '@type': 'BreadcrumbList',

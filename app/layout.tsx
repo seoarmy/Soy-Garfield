@@ -21,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="es">
       <head>
+        <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="" />
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-SSDCBZCNRV"
           strategy="afterInteractive"

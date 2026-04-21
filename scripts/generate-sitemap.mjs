@@ -15,31 +15,58 @@ const client = createClient({
 
 const baseUrl = 'https://soygarfield.com';
 
+const normalizeTag = (tag) => tag.toLowerCase().replace(/\s+/g, '-');
+
+const escapeXml = (str = '') =>
+    str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+
 async function generateSitemaps() {
     console.log('Generando sitemaps...');
 
     try {
-        const [articles, tagResults] = await Promise.all([
+        const [articles, tagResults, authors] = await Promise.all([
             client.fetch(
-                `*[_type == "article"] | order(_updatedAt desc) { "slug": slug.current, "date": date, "updatedAt": _updatedAt, title, category, tags }`
+                `*[_type == "article"] | order(_updatedAt desc) {
+                  "slug": slug.current,
+                  "date": date,
+                  "createdAt": _createdAt,
+                  "updatedAt": _updatedAt,
+                  title,
+                  category,
+                  tags
+                }`
             ),
             client.fetch(`*[_type == "article" && defined(tags)] { tags }.tags`),
+            client.fetch(`*[_type == "author" && defined(slug.current)] { "slug": slug.current }`),
         ]);
         console.log(`${articles.length} artículos encontrados.`);
 
-        const allTags = [...new Set(tagResults.flat())];
+        const tagCountMap = new Map();
+        tagResults.flat().forEach((tag) => {
+            const normalized = normalizeTag(tag);
+            tagCountMap.set(normalized, (tagCountMap.get(normalized) || 0) + 1);
+        });
+        const sitemapTags = [...tagCountMap.entries()]
+            .filter(([, count]) => count >= 3)
+            .map(([tag]) => tag)
+            .sort();
 
         const staticRoutes = [
-            { path: '', freq: 'daily', priority: '1.0' },
-            { path: '/about', freq: 'weekly', priority: '0.8' },
-            { path: '/contact', freq: 'weekly', priority: '0.7' },
-            { path: '/authors', freq: 'weekly', priority: '0.6' },
-            { path: '/category/seo', freq: 'daily', priority: '0.9' },
-            { path: '/category/ia', freq: 'daily', priority: '0.9' },
-            { path: '/sobre/politica-editorial', freq: 'monthly', priority: '0.5' },
+            { path: '', lastmod: new Date().toISOString() },
+            { path: '/about', lastmod: '2025-01-01T00:00:00.000Z' },
+            { path: '/author/pietro-fiorillo', lastmod: '2025-01-01T00:00:00.000Z' },
+            { path: '/contact', lastmod: '2025-01-01T00:00:00.000Z' },
+            { path: '/authors', lastmod: '2025-01-01T00:00:00.000Z' },
+            { path: '/tag', lastmod: new Date().toISOString() },
+            { path: '/category/seo', lastmod: new Date().toISOString() },
+            { path: '/category/ia', lastmod: new Date().toISOString() },
+            { path: '/sobre/politica-editorial', lastmod: '2025-01-01T00:00:00.000Z' },
         ];
-
-        const today = new Date().toISOString().split('T')[0];
 
         // ── Main sitemap ──────────────────────────────────────────────────────────
         let mainXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
@@ -48,29 +75,30 @@ async function generateSitemaps() {
         staticRoutes.forEach(r => {
             mainXml += `  <url>\n`;
             mainXml += `    <loc>${baseUrl}${r.path}</loc>\n`;
-            mainXml += `    <lastmod>${today}</lastmod>\n`;
-            mainXml += `    <changefreq>${r.freq}</changefreq>\n`;
-            mainXml += `    <priority>${r.priority}</priority>\n`;
+            mainXml += `    <lastmod>${new Date(r.lastmod).toISOString()}</lastmod>\n`;
+            mainXml += `  </url>\n`;
+        });
+
+        authors.forEach((a) => {
+            mainXml += `  <url>\n`;
+            mainXml += `    <loc>${baseUrl}/author/${a.slug}</loc>\n`;
+            mainXml += `    <lastmod>${new Date().toISOString()}</lastmod>\n`;
             mainXml += `  </url>\n`;
         });
 
         articles.forEach(a => {
-            const lastMod = a.updatedAt ? new Date(a.updatedAt).toISOString().split('T')[0] : today;
+            const lastMod = a.updatedAt ? new Date(a.updatedAt).toISOString() : new Date().toISOString();
             mainXml += `  <url>\n`;
             mainXml += `    <loc>${baseUrl}/article/${a.slug}</loc>\n`;
             mainXml += `    <lastmod>${lastMod}</lastmod>\n`;
-            mainXml += `    <changefreq>monthly</changefreq>\n`;
-            mainXml += `    <priority>0.9</priority>\n`;
             mainXml += `  </url>\n`;
         });
 
-        allTags.forEach(tag => {
-            const tagSlug = encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-'));
+        sitemapTags.forEach(tag => {
+            const tagSlug = encodeURIComponent(tag);
             mainXml += `  <url>\n`;
             mainXml += `    <loc>${baseUrl}/tag/${tagSlug}</loc>\n`;
-            mainXml += `    <lastmod>${today}</lastmod>\n`;
-            mainXml += `    <changefreq>weekly</changefreq>\n`;
-            mainXml += `    <priority>0.6</priority>\n`;
+            mainXml += `    <lastmod>${new Date().toISOString()}</lastmod>\n`;
             mainXml += `  </url>\n`;
         });
 
@@ -78,14 +106,14 @@ async function generateSitemaps() {
 
         // ── Google News sitemap (articles from last 48 hours) ────────────────────
         const cutoff = new Date(Date.now() - 48 * 60 * 60 * 1000);
-        const recentArticles = articles.filter(a => a.date && new Date(a.date) >= cutoff);
+        const recentArticles = articles.filter(a => a.createdAt && new Date(a.createdAt) >= cutoff);
 
         let newsXml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
         newsXml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n`;
         newsXml += `        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">\n`;
 
         recentArticles.forEach(a => {
-            const pubDate = a.date ? new Date(a.date).toISOString() : new Date().toISOString();
+            const pubDate = a.createdAt ? new Date(a.createdAt).toISOString() : new Date().toISOString();
             newsXml += `  <url>\n`;
             newsXml += `    <loc>${baseUrl}/article/${a.slug}</loc>\n`;
             newsXml += `    <news:news>\n`;
@@ -94,7 +122,7 @@ async function generateSitemaps() {
             newsXml += `        <news:language>es</news:language>\n`;
             newsXml += `      </news:publication>\n`;
             newsXml += `      <news:publication_date>${pubDate}</news:publication_date>\n`;
-            newsXml += `      <news:title>${a.title.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</news:title>\n`;
+            newsXml += `      <news:title>${escapeXml(a.title)}</news:title>\n`;
             newsXml += `    </news:news>\n`;
             newsXml += `  </url>\n`;
         });

@@ -1,6 +1,4 @@
-'use client';
-
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { List } from 'lucide-react';
 
 interface TocItem {
@@ -34,27 +32,6 @@ export function extractTocItems(content: any[]): TocItem[] {
 }
 
 export default function TableOfContents({ items }: Props) {
-  const [activeId, setActiveId] = useState<string>('');
-
-  useEffect(() => {
-    if (!items.length) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        }
-      },
-      { rootMargin: '-80px 0px -60% 0px', threshold: 0 }
-    );
-    items.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-    return () => observer.disconnect();
-  }, [items]);
-
   if (!items.length) return null;
 
   return (
@@ -75,19 +52,7 @@ export default function TableOfContents({ items }: Props) {
           <li key={id} className={level === 3 ? 'pl-5' : ''}>
             <a
               href={`#${id}`}
-              onClick={(e) => {
-                e.preventDefault();
-                const el = document.getElementById(id);
-                if (el) {
-                  const y = el.getBoundingClientRect().top + window.scrollY - 100;
-                  window.scrollTo({ top: y, behavior: 'smooth' });
-                }
-              }}
-              className={`block py-1.5 text-sm font-semibold leading-snug transition-colors duration-200 no-underline ${
-                activeId === id
-                  ? 'text-garfield-600'
-                  : 'text-slate-500 hover:text-slate-900'
-              } ${level === 3 ? 'text-[0.8rem]' : ''}`}
+              className={`block py-1.5 text-sm font-semibold leading-snug transition-colors duration-200 no-underline text-slate-500 hover:text-slate-900 ${level === 3 ? 'text-[0.8rem]' : ''}`}
             >
               {level === 3 && (
                 <span className="inline-block w-3 h-px bg-slate-300 mr-2 align-middle" />

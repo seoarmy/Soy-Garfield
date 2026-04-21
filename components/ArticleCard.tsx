@@ -7,9 +7,10 @@ import Image from 'next/image';
 interface ArticleCardProps {
   article: Article;
   variant?: 'default' | 'compact' | 'featured';
+  isFirst?: boolean;
 }
 
-const ArticleCard: React.FC<ArticleCardProps> = ({ article, variant = 'default' }) => {
+const ArticleCard: React.FC<ArticleCardProps> = ({ article, variant = 'default', isFirst = false }) => {
   if (variant === 'compact') {
     return (
       <Link
@@ -50,6 +51,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, variant = 'default' 
           src={article.imageUrl || 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=1200&h=628'}
           alt={article.title}
           fill
+          priority={isFirst}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition-transform duration-1000 group-hover:scale-110"
         />
