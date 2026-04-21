@@ -8,6 +8,7 @@ import NewsletterForm from '../../../components/NewsletterForm';
 import TableOfContents, { extractTocItems } from '../../../components/TableOfContents';
 import FaqAccordion from '../../../components/FaqAccordion';
 import { Article } from '../../../types';
+import { urlFor } from '../../../services/sanity';
 
 const CodeBlock = ({ value }: { value: any }) => {
   return (
@@ -49,7 +50,7 @@ const portableTextComponents = {
   },
   types: {
     image: ({ value }: any) => {
-      const src = value?.asset?.url;
+      const src = value?.asset?.url || urlFor(value)?.auto('format').fit('max').width(1600).url();
       if (!src) return null;
       const width = value?.asset?.metadata?.dimensions?.width || 1200;
       const height = value?.asset?.metadata?.dimensions?.height || 628;
