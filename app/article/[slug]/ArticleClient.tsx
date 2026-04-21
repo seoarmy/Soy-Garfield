@@ -88,6 +88,52 @@ const portableTextComponents = {
       </div>
     ),
     codeBlock: ({ value }: any) => <CodeBlock value={value} />,
+    divider: () => <hr className="my-12 border-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />,
+    youtube: ({ value }: any) => {
+      const url: string = value?.url || '';
+      const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|watch\?v=|shorts\/))([^?&\s]+)/);
+      if (!match) return null;
+      return (
+        <div className="my-12 overflow-hidden rounded-[2rem] shadow-2xl aspect-video">
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${match[1]}`}
+            title={value?.title || 'Video'}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="w-full h-full"
+          />
+        </div>
+      );
+    },
+    table: ({ value }: any) => {
+      const rows: { cells: string[] }[] = value?.rows || [];
+      if (!rows.length) return null;
+      const [head, ...body] = rows;
+      return (
+        <div className="my-12 overflow-x-auto rounded-2xl border border-slate-100 shadow-sm">
+          <table className="w-full text-sm">
+            {head && (
+              <thead className="bg-slate-900 text-white">
+                <tr>
+                  {head.cells.map((cell, i) => (
+                    <th key={i} className="px-6 py-4 text-left text-[0.6rem] font-black uppercase tracking-[0.2em]">{cell}</th>
+                  ))}
+                </tr>
+              </thead>
+            )}
+            <tbody>
+              {body.map((row, i) => (
+                <tr key={i} className={i % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                  {row.cells.map((cell, j) => (
+                    <td key={j} className="px-6 py-4 text-slate-600 font-medium border-t border-slate-100">{cell}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    },
   },
   list: {
     bullet: ({ children }: any) => <ul className="space-y-4 my-8 pl-2">{children}</ul>,
