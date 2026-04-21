@@ -148,7 +148,7 @@ const portableTextComponents = {
   },
   list: {
     bullet: ({ children }: any) => <ul className="space-y-4 my-8 pl-2">{children}</ul>,
-    number: ({ children }: any) => <ol className="space-y-4 my-8 pl-2">{children}</ol>,
+    number: ({ children }: any) => <ol className="my-8 pl-8 space-y-3 list-decimal">{children}</ol>,
   },
   listItem: {
     bullet: ({ children }: any) => (
@@ -158,8 +158,8 @@ const portableTextComponents = {
       </li>
     ),
     number: ({ children }: any) => (
-      <li className="flex gap-5 items-start mb-4">
-        <span className="text-xl text-slate-600 font-medium leading-relaxed">{children}</span>
+      <li className="text-xl text-slate-600 font-medium leading-relaxed marker:text-garfield-500 marker:font-black">
+        {children}
       </li>
     ),
   },

@@ -92,7 +92,7 @@ export const article = defineType({
                     description: 'Importante para SEO y accesibilidad.',
                 }
             ],
-            validation: (Rule) => Rule.required(),
+            validation: (Rule) => Rule.optional(),
         }),
         defineField({
             name: 'isFeatured',
