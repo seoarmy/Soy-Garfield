@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 
-export default function NewsletterForm() {
+export default function NewsletterForm({ variant = 'dark' }: { variant?: 'dark' | 'light' }) {
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
@@ -24,19 +24,27 @@ export default function NewsletterForm() {
   };
 
   if (status === 'success') {
-    return <p className="text-garfield-400 font-black uppercase tracking-widest text-sm mb-8">¡Suscrito! Revisa tu bandeja de entrada.</p>;
+    return <p className={`font-black uppercase tracking-widest text-sm ${variant === 'light' ? 'text-garfield-500' : 'text-garfield-400 mb-8'}`}>¡Suscrito! Revisa tu bandeja de entrada.</p>;
   }
+
+  const inputClass = variant === 'light'
+    ? 'flex-1 rounded-2xl border border-slate-200 bg-white px-6 py-4 text-slate-900 placeholder-slate-400 focus:ring-2 focus:ring-garfield-500 transition-all outline-none'
+    : 'flex-1 rounded-2xl border-transparent bg-white/10 px-6 py-4 text-white placeholder-slate-500 focus:bg-white/20 focus:ring-2 focus:ring-garfield-500 transition-all outline-none';
+
+  const formClass = variant === 'light'
+    ? 'flex flex-col gap-3 mb-4'
+    : 'flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto mb-8';
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto mb-8">
+      <form onSubmit={handleSubmit} className={formClass}>
         <input
           type="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Tu mejor email"
-          className="flex-1 rounded-2xl border-transparent bg-white/10 px-6 py-4 text-white placeholder-slate-500 focus:bg-white/20 focus:ring-2 focus:ring-garfield-500 transition-all outline-none"
+          className={inputClass}
         />
         <button
           type="submit"

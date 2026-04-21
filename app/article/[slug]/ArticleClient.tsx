@@ -361,7 +361,7 @@ export default function ArticleClient({ article, relatedArticles, sidebarArticle
               <div className="bg-slate-50 rounded-[2.5rem] p-10 border border-slate-100">
                 <h4 className="text-lg font-black text-slate-900 mb-4">Estrategia Semanal</h4>
                 <p className="text-xs text-slate-500 font-bold mb-8 uppercase tracking-widest">Noticias de SEO & IA</p>
-                <NewsletterForm />
+                <NewsletterForm variant="light" />
               </div>
             </div>
           </aside>

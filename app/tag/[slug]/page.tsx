@@ -130,7 +130,7 @@ export default async function TagPage({ params }: Props) {
               <div className="absolute top-0 right-0 -mt-10 -mr-10 h-40 w-40 bg-garfield-500 rounded-full opacity-20 blur-3xl"></div>
               <h4 className="text-3xl font-black mb-6 tracking-tight">Estrategia Semanal</h4>
               <p className="text-sm text-slate-400 mb-10 font-medium">Únete a los mejores profesionales del sector.</p>
-              <NewsletterForm />
+              <NewsletterForm variant="light" />
             </div>
 
             {relatedTags.length > 0 && (
